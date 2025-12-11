@@ -108,6 +108,17 @@ int _atoi(char*);
 
 
 int main(int argc, char **argv){
+	if(!strcmp(*(argv + 1), "-h") || !strcmp(*(argv + 1), "-help")){
+		printf("Display a 3D ascii cube\n");
+		printf("### How to use program ###\n");
+		printf("Run the program including 3 input arguments in the following order:\n");
+		printf(" 1: [int] Row -> How many rows the window displaying the cube has\n");
+		printf(" 2: [int] Col -> How many coloumns the windows displaying the cube has\n");
+		printf(" 3: [int] Scale -> How big the cube is\n");
+		printf(" 4: [Optional] To enable face colors use the flag -c or -color\n"); 
+		return 0;
+	}
+
 	if(argc < 4){
 		printf("How to start program: <Progam> <Screen width> <Screen height> <Cube size> [Optional] -color\n");
 		return -1;
