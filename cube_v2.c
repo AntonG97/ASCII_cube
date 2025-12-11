@@ -113,9 +113,10 @@ int main(int argc, char **argv){
 		printf("### How to use program ###\n");
 		printf("Run the program including 3 input arguments in the following order:\n");
 		printf(" 1: [int] Row -> How many rows the window displaying the cube has\n");
-		printf(" 2: [int] Col -> How many coloumns the windows displaying the cube has\n");
+		printf(" 2: [int] Col -> How many coloumns the windows displaying the cube has. NOTE: The value of Col should be double that of Row, i.e Col = 2*Row\n");
 		printf(" 3: [int] Scale -> How big the cube is\n");
-		printf(" 4: [Optional] To enable face colors use the flag -c or -color\n"); 
+		printf(" 4: [Optional] To enable face colors use the flag -c or -color\n");
+		printf("To exit the program type either 'q' or 'clear' in the termainal running the program\n");
 		return 0;
 	}
 
