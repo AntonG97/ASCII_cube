@@ -8,14 +8,21 @@
 #include <sys/select.h>
 
 /* Moves the cursor to row x, col y */
-#define CUP(x,y) printf("%c[%d;%dH",'\033', x,y);
+#define CUP(x,y) printf("\033[%d;%dH", x,y);
 /* Erase in display.
          x=0: Clear from cursor to end of screen
          x=1: Clear from cursor to beginning of screen 
          x=2: Clear entire screen and delete lines in scrollback buffer
 */
-#define ED(x) printf("%c[%dJ",'\033', x);
-
+#define ED(x) printf("\033[%dJ", x);
+/* Moves the cursor the beginning of next line */
+#define CNL() printf("\033[E");
+/* Display the cursor */
+#define CURSHW() printf("\033[?25h");
+/* Hide the cursor */
+#define CURHID() printf("\033[?25l");
+/* Reset terminal color */
+#define COLOR_RESET() printf("\033[0m");
 struct vector{
 	double x;
 	double y;
@@ -74,9 +81,9 @@ static int row;
 static int col;
 
 /* Displaying */
-int createScreenBuf(int, int);
-void printScreen(int,int, bool);
-void fillScreen(int , int );
+int createBuf(int, int);
+void printCube(int,int, bool);
+void clearBuf(int , int );
 const char* getColor(char);
 
 /* Rotating */
@@ -139,19 +146,19 @@ int main(int argc, char **argv){
 		if(!strcmp(*(argv+4), "-color") || !strcmp(*(argv+4), "-c"))
 			colorSet = true;
 
-	if(createScreenBuf(row, col) != 0){
+	if(createBuf(row, col) != 0){
 		printf("Allocation of screen buffer failed!\n");
 		return -1;
 	}
-	fillScreen(row, col);
-	/* Set alternate screen to isolate program */
-	printf("\033[?1049h");
-	while(1){
-		//CUP(1,1);
-		//ED(2);
 
-		printf("\033[2J\033[H");
-		fillScreen(row, col);
+	CURHID();
+	while(1){
+		clearBuf(row, col);
+		//ED(2);
+		//CUP(1,1);
+
+		//printf("\033[2J\033[H");
+		//clearBuf(row, col);
 		rotate();	
 		size = (int)(sizeof(cube_rotated)/sizeof(cube_rotated[0]));	
 		for(int pt = 0; pt < size; pt++){
@@ -175,7 +182,7 @@ int main(int argc, char **argv){
 				drawTriangle(*faces[i].TR, *faces[i].BR, *faces[i].BL, getASCII(i));
 			}
 		}
-		printScreen(row,col, colorSet);
+		printCube(row,col, colorSet);
 
 		/* ----------------- INPUT HANDLING --------------- */
 		/* File description set variable */
@@ -188,11 +195,10 @@ int main(int argc, char **argv){
 		struct timeval tv;
 		tv.tv_sec = 0;
 		tv.tv_usec = 0;
-
+		/* Exit progam if user input 'q' or 'clear' */
 		int r = select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
 		if (r > 0 && FD_ISSET(STDIN_FILENO, &fds)) {
 			if (fgets(buffer, sizeof(buffer), stdin)) {
-				/* Remove newline */
 				buffer[strcspn(buffer, "\n")] = '\0';
 
 				if (strcmp(buffer, "clear") == 0 || strcmp(buffer, "q") == 0) {
@@ -200,22 +206,22 @@ int main(int argc, char **argv){
 				}
 			}
 		}
-		usleep(17500);
-		fflush(stdin);
+		usleep(17800);
 	}
+
 	for(int r = 0; r < row; r++)
 		free(*(screenBuff + r));
 	free(screenBuff);
-	
-	/* Disable alternate screen */
-	printf("\033[?1049l");
+
+	CURSHW();
+	ED(2);
+	CUP(1,1);
 	return 0;
 }
 
 /* Allocates memory for screen buffer. Origo on [0,0] */
-int createScreenBuf(int row, int col){
+int createBuf(int row, int col){
 	int i;
-	//int **tempMap;
 	screenBuff = (char**)malloc(sizeof(char*) * row);
 	if( screenBuff == NULL ) return -1;
 	for(i = 0; i < row; i++){
@@ -228,35 +234,36 @@ int createScreenBuf(int row, int col){
 /* Rotates the cube by moving the cube verticies */
 void rotate(void){
 	struct vector v;
-	static double aX = 0.0, aY = 0.0, aZ = 0.0;
-	int i;
-	double combR[3][3];
-	double cx = cos(aX), sx = sin(aX);
-	double cy = cos(aY), sy = sin(aY);
-	double cz = cos(aZ), sz = sin(aZ);
-	
-	combR[0][0] = cz*cy;
-	combR[0][1] = cz*sy*sx-sz*cx;
-	combR[0][2] = cz*sy*cx +sz*sx;
+	static double angX = 0.0, angY = 0.0, angZ = 0.0;
+	double rMatrice[3][3];
+	double cosX = cos(angX), sinX = sin(angX);
+	double cosY = cos(angY), sinY = sin(angY);
+	double cosZ = cos(angZ), sinZ = sin(angZ);
 
-	combR[1][0] = sz*cy;
-	combR[1][1] = sz*sy*sx+cz*cx;
-	combR[1][2] = sz*sy*cx-cz*sx;
+	/* Define rotation matrice */	
+	rMatrice[0][0] = cosZ*cosY;
+	rMatrice[0][1] = cosZ*sinY*sinX-sinZ*cosX;
+	rMatrice[0][2] = cosZ*sinY*cosX +sinZ*sinX;
 
-	combR[2][0] = -sy;
-	combR[2][1] = cy*sx;
-	combR[2][2] = cy*cx;
+	rMatrice[1][0] = sinZ*cosY;
+	rMatrice[1][1] = sinZ*sinY*sinX+cosZ*cosX;
+	rMatrice[1][2] = sinZ*sinY*cosX-cosZ*sinX;
+
+	rMatrice[2][0] = -sinY;
+	rMatrice[2][1] = cosY*sinX;
+	rMatrice[2][2] = cosY*cosX;
+
 	/* Rotate each vertice */
-	for(i = 0; i < (int)(sizeof(cube) / sizeof(cube[0])); i++){
+	for(int i = 0; i < (int)(sizeof(cube) / sizeof(cube[0])); i++){
 		v = cube[i];
-		cube_rotated[i].x = combR[0][0]*v.x+combR[0][1]*v.y+combR[0][2]*v.z;
-		cube_rotated[i].y = combR[1][0]*v.x+combR[1][1]*v.y+combR[1][2]*v.z;
-		cube_rotated[i].z = combR[2][0]*v.x+combR[2][1]*v.y+combR[2][2]*v.z;
+		cube_rotated[i].x = rMatrice[0][0]*v.x+rMatrice[0][1]*v.y+rMatrice[0][2]*v.z;
+		cube_rotated[i].y = rMatrice[1][0]*v.x+rMatrice[1][1]*v.y+rMatrice[1][2]*v.z;
+		cube_rotated[i].z = rMatrice[2][0]*v.x+rMatrice[2][1]*v.y+rMatrice[2][2]*v.z;
 	}
 	/* Float modulus */
-	aX = fmod(aX + 0.01, 2*M_PI);
-	aY = fmod(aY + 0.02, 2*M_PI);
-	aZ = fmod(aZ + 0.03, 2*M_PI);
+	angX = fmod(angX + 0.013, 2*M_PI);
+	angY = fmod(angY + 0.025, 2*M_PI);
+	angZ = fmod(angZ + 0.036, 2*M_PI);
 }
 
 char getASCII(int face){
@@ -265,7 +272,7 @@ char getASCII(int face){
 		case 1: return 'o';
 		case 2: return '=';
 		case 3: return '*';
-		case 4: return '#';
+		case 4: return '%';
 		case 5: return '$';
 		default: return 'E';
 	}
@@ -292,15 +299,16 @@ void drawTriangle(struct vector a, struct vector b, struct vector c, char ascii)
 		v2 = vectorIsEqual(v1,a) ? b : a;
 	}
 	
-	//FlatTop
+	/* Flat top */
 	if(v0.y == v1.y){
 		drawFlatTop(v0,v1,v2,ascii);
 		return;
+	/* Flat bot */
 	}else if(v1.y == v2.y){
-		//Flat bot
 		drawFlatBot(v0,v1,v2, ascii);
 		return;
 	}
+	/* Calculate mid-point m */
 	m.x = v0.x + ((v1.y-v0.y)*(v2.x-v0.x)) / (v2.y - v0.y);
 	m.y = v1.y;
 	
@@ -343,10 +351,8 @@ void drawFlatTop(struct vector a, struct vector b, struct vector c, char ascii){
 			screenBuff[y][i] = ascii;
 		}
 		if( vectorIsEqual(stPt, c)) break;
-		//stPt.x = fabs(stPt.x + slopeAC);
 		stPt.x += slopeAC;
 		stPt.y += 1.0;
-		//endPt.x = fabs(endPt.x + slopeBC);
 		endPt.x += slopeBC;
 		endPt.y += 1.0;
 	}	
@@ -364,17 +370,17 @@ void drawFlatBot(struct vector a, struct vector b, struct vector c, char ascii){
 	double slopeAC, slopeAB;
 	
 	if( (slopeAC = getSlope(a,c)) == DBL_MAX){
-		//dx = 0
+		/* dx = 0 */
 		slopeAC = 0;
 	}else if(slopeAC == -DBL_MAX){
-		//dy
+		/* dy = 0 */
 		return;	
 	}
 	if( (slopeAB = getSlope(a,b)) == DBL_MAX){
-		//dx = 0
+		/* dx = 0 */
 		slopeAB = 0;
 	}else if(slopeAB == -DBL_MAX){
-		//dy = 0
+		/* dy = 0 */
 		return;
 	}
 	
@@ -385,10 +391,8 @@ void drawFlatBot(struct vector a, struct vector b, struct vector c, char ascii){
 			screenBuff[y][i] = ascii;
 		}
 		if( vectorIsEqual(stPt, b)) break;
-		//stPt.x = fabs(stPt.x + slopeAB);
 		stPt.x += slopeAB;
 		stPt.y += 1.0;
-		//endPt.x = fabs(endPt.x + slopeAC);
 		endPt.x += slopeAC;
 		endPt.y += 1.0;
 	}	
@@ -439,7 +443,6 @@ double getSlope(struct vector a, struct vector b){
 struct vector nearX(struct vector a, struct vector b){
 	if(a.y < b.y) return a;
 	if(a.y == b.y){
-		//struct vector temp = nearY(a,b);
 		return (a.x < b.x) ? a : b; 
 	}
 	return b;
@@ -451,7 +454,7 @@ bool vectorIsEqual(struct vector a, struct vector b){
 }
 
 /* Debug method */
-void fillScreen(int row, int col){
+void clearBuf(int row, int col){
 	for(int r = 0; r < row; r++)
 		for(int c = 0; c < col; c++)
 			screenBuff[r][c] = ' ';
@@ -463,19 +466,50 @@ const char* face_colors[] = {
     "\033[33m",  //Yellow
     "\033[34m",  //Blue
     "\033[35m",  //Magenta
-    "\033[36m",  //Cyan
-    "\033[0m",  //Reset 
+    "\033[36m",  //cosYan
+    NULL,   	 //Reset 
 };
 
-void printScreen(int row, int col, bool colorSet){
-	for(int r = 0; r < row; r++){
-		for(int c = 0; c < col; c++)
-			if(colorSet){
-				printf("%s%c\033[0m", getColor(screenBuff[r][c]),screenBuff[r][c]);
-			}else{
-				printf("%c", screenBuff[r][c]);
+void printCube(int row, int col, bool colorIsSet){
+
+	int r, c, n, bufSize, colorSize;
+	colorSize = (int)(sizeof(face_colors) / sizeof(face_colors[0]));
+	bufSize = col * (colorSize + 1);
+	char linebuf[bufSize + 1];
+	const char *colorStr;
+
+	CUP(1,1);
+
+	for(r = 0; r < row; r++){
+		if(colorIsSet){
+			char *pStr = linebuf;
+			size_t remaining = sizeof(linebuf);
+			for(c = 0; c < col; c++){
+				colorStr = getColor(screenBuff[r][c]);
+				if(colorStr){
+					n = snprintf(pStr, remaining, "%s%c", colorStr, screenBuff[r][c]);	
+					if( n < 0 || (size_t)n >= remaining) break;
+					/* Increment buff pointer */
+					pStr += n;
+					/* Adjust remaining size */
+					remaining -= n;
+				}else{
+					if(remaining < 2) break;
+					/* Add blankspace to buffer */
+					*pStr++ = screenBuff[r][c];
+					/* Adjust remaining size */
+					remaining--;
+					*pStr = '\0';
+				}
 			}
-		printf("\n");
+				/* Write buffer to screen */
+				fwrite(linebuf, 1, (size_t)(pStr - linebuf), stdout);
+				COLOR_RESET();
+		}else{
+			fwrite(screenBuff[r], 1, col, stdout);
+		}
+	/* Go to next row */
+	CNL();
 	}
 }
 
@@ -486,7 +520,7 @@ const char* getColor(char ch){
 		case 'o': index = 1; break;
 		case '=': index = 2; break;
 		case '*': index = 3; break;
-		//case '#': index = 4; break;
+		case '%': index = 4; break;
 		case '$': index = 5; break;
 		default: index = 6;
 	}
@@ -497,9 +531,6 @@ const char* getColor(char ch){
  * Dot product between a vector and direction if viewer
  */
 double dotProd(struct vector v1, struct vector v2){
-	//Paralell = 1
-	//Perpendicular = 0
-	//Pararell but reversed = -1
 	return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
 }
 
@@ -541,7 +572,7 @@ void projPt(struct vector *pt){
 	}
 }
 
-
+/* Convert ascii to integer */
 int _atoi(char *str){
 	int val = 0, sign = 1, indx = 0;
 	if(str == NULL) return -1;
