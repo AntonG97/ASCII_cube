@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <float.h>
 #include <sys/select.h>
+#include <signal.h>
 
 /* Moves the cursor to row x, col y */
 #define CUP(x,y) printf("\033[%d;%dH", x,y);
@@ -112,9 +113,10 @@ double getSlope(struct vector a, struct vector b);
 
 /* Auxiallary functions */
 int _atoi(char*);
-
+void handle_sigint(int);
 
 int main(int argc, char **argv){
+	signal(SIGINT, handle_sigint);
 	if(!strcmp(*(argv + 1), "-h") || !strcmp(*(argv + 1), "-help")){
 		printf("Display a 3D ascii cube\n");
 		printf("### How to use program ###\n");
@@ -152,13 +154,9 @@ int main(int argc, char **argv){
 	}
 
 	CURHID();
+	ED(2);
 	while(1){
 		clearBuf(row, col);
-		//ED(2);
-		//CUP(1,1);
-
-		//printf("\033[2J\033[H");
-		//clearBuf(row, col);
 		rotate();	
 		size = (int)(sizeof(cube_rotated)/sizeof(cube_rotated[0]));	
 		for(int pt = 0; pt < size; pt++){
@@ -214,8 +212,6 @@ int main(int argc, char **argv){
 	free(screenBuff);
 
 	CURSHW();
-	ED(2);
-	CUP(1,1);
 	return 0;
 }
 
@@ -461,7 +457,7 @@ void clearBuf(int row, int col){
 }
 
 const char* face_colors[] = {
-    "\033[31m",  //Red
+    "\033[91m",  //Red
     "\033[32m",  //Green
     "\033[33m",  //Yellow
     "\033[34m",  //Blue
@@ -585,3 +581,9 @@ int _atoi(char *str){
 	return sign * val;
 }
 
+/* If user input CTRL+D, reset cursor and color scheme */
+void handle_sigint(int signal){
+	CURSHW();
+	COLOR_RESET();
+	exit(0);
+}
