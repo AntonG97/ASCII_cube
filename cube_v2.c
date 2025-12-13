@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <float.h>
 #include <sys/select.h>
+#include <sys/utsname.h>
 #include <signal.h>
 
 /* Moves the cursor to row x, col y */
@@ -152,9 +153,10 @@ int main(int argc, char **argv){
 		printf("Allocation of screen buffer failed!\n");
 		return -1;
 	}
-
+	
 	CURHID();
 	ED(2);
+	//TODO: CHange so that the program ONLY cleares cube and prints for terminal
 	while(1){
 		clearBuf(row, col);
 		rotate();	
@@ -204,7 +206,7 @@ int main(int argc, char **argv){
 				}
 			}
 		}
-		usleep(17800);
+		usleep(18500);
 	}
 
 	for(int r = 0; r < row; r++)
@@ -463,7 +465,7 @@ const char* face_colors[] = {
     "\033[34m",  //Blue
     "\033[35m",  //Magenta
     "\033[36m",  //cosYan
-    NULL,   	 //Reset 
+    NULL, 
 };
 
 void printCube(int row, int col, bool colorIsSet){
@@ -482,25 +484,17 @@ void printCube(int row, int col, bool colorIsSet){
 			size_t remaining = sizeof(linebuf);
 			for(c = 0; c < col; c++){
 				colorStr = getColor(screenBuff[r][c]);
-				if(colorStr){
-					n = snprintf(pStr, remaining, "%s%c", colorStr, screenBuff[r][c]);	
-					if( n < 0 || (size_t)n >= remaining) break;
-					/* Increment buff pointer */
-					pStr += n;
-					/* Adjust remaining size */
-					remaining -= n;
-				}else{
-					if(remaining < 2) break;
-					/* Add blankspace to buffer */
-					*pStr++ = screenBuff[r][c];
-					/* Adjust remaining size */
-					remaining--;
-					*pStr = '\0';
-				}
+				n = snprintf(pStr, remaining, "%s%c", (colorStr) ? colorStr : "\033[0m", screenBuff[r][c]);
+				if( n < 0 || (size_t)n >= remaining) break;
+				/* Increment pointer to buffer */
+				pStr += n;
+				/* Adjust remaining size */
+				remaining -= n;
+				if(!colorStr) *pStr = '\0';
+
 			}
 				/* Write buffer to screen */
 				fwrite(linebuf, 1, (size_t)(pStr - linebuf), stdout);
-				COLOR_RESET();
 		}else{
 			fwrite(screenBuff[r], 1, col, stdout);
 		}
@@ -587,3 +581,4 @@ void handle_sigint(int signal){
 	COLOR_RESET();
 	exit(0);
 }
+
