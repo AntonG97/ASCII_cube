@@ -5,8 +5,6 @@
 #include <string.h>
 #include <stdbool.h>
 #include <float.h>
-#include <sys/select.h>
-#include <sys/utsname.h>
 #include <signal.h>
 
 /* Moves the cursor to row x, col y */
@@ -86,7 +84,6 @@ static int col;
 int createBuf(int, int);
 void printCube(int,int, bool);
 void clearBuf(int , int );
-const char* getColor(char);
 
 /* Rotating */
 void rotate(void);
@@ -100,7 +97,6 @@ void movePt(struct vector *pt, int row, int col);
 void projPt(struct vector *pt);
 
 /* Draw Triangle */
-char getASCII(int face);
 void drawTriangle(struct vector a, struct vector b, struct vector c, char ascii);
 void drawFlatTop(struct vector a, struct vector b, struct vector c, char ascii);
 void drawFlatBot(struct vector a, struct vector b, struct vector c, char ascii);
@@ -113,26 +109,26 @@ int isFlat(struct vector a, struct vector b, struct vector c);
 double getSlope(struct vector a, struct vector b);
 
 /* Auxiallary functions */
+void printInfo(void);
+char getASCII(int face);
+const char* getColor(char);
 int _atoi(char*);
 void handle_sigint(int);
 
 int main(int argc, char **argv){
 	signal(SIGINT, handle_sigint);
-	if(!strcmp(*(argv + 1), "-h") || !strcmp(*(argv + 1), "-help")){
-		printf("Display a 3D ascii cube\n");
-		printf("### How to use program ###\n");
-		printf("Run the program including 3 input arguments in the following order:\n");
-		printf(" 1: [int] Row -> How many rows the window displaying the cube has\n");
-		printf(" 2: [int] Col -> How many coloumns the windows displaying the cube has. NOTE: The value of Col should be double that of Row, i.e Col = 2*Row\n");
-		printf(" 3: [int] Scale -> How big the cube is\n");
-		printf(" 4: [Optional] To enable face colors use the flag -c or -color\n");
-		printf("To exit the program type either 'q' or 'clear' in the termainal running the program\n");
-		return 0;
-	}
+	
 
-	if(argc < 4){
-		printf("How to start program: <Progam> <Screen width> <Screen height> <Cube size> [Optional] -color\n");
-		return -1;
+	if(argc <= 2){
+		if( !*(argv + 1) ) {
+			printf("How to start program: <Progam> <Screen width> <Screen height> <Cube size> [Optional] -color\nOr use flag -h or -help for info about the program");
+			return 0;
+
+		}
+		if(!strcmp(*(argv + 1), "-h") || !strcmp(*(argv + 1), "-help")){
+			printInfo();
+			return 0;
+		}
 	}
 
 	double distance = 3.5, scale = 20.0;
@@ -143,12 +139,21 @@ int main(int argc, char **argv){
 
 	row = _atoi(*(argv + 1));
 	col = _atoi(*(argv + 2));
-	scale = _atoi(*(argv + 3));
+	
+	if( argc == 4 ){
+		if(!strcmp(*(argv+3), "-color") || !strcmp(*(argv+3), "-c")){
+			colorSet = true;
+		}else{
+			scale = _atoi(*(argv + 3));
+		}
+	}
 
-	if(argc == 5)
+	if(argc == 5){
 		if(!strcmp(*(argv+4), "-color") || !strcmp(*(argv+4), "-c"))
 			colorSet = true;
-
+		scale = _atoi(*(argv + 3));
+	
+	}
 	if(createBuf(row, col) != 0){
 		printf("Allocation of screen buffer failed!\n");
 		return -1;
@@ -474,8 +479,7 @@ void printCube(int row, int col, bool colorIsSet){
 	colorSize = (int)(sizeof(face_colors) / sizeof(face_colors[0]));
 	bufSize = col * (colorSize + 1);
 	char linebuf[bufSize + 1];
-	const char *colorStr;
-
+	const char *colorStr, *reset_color = "\033[0m";
 	CUP(1,1);
 
 	for(r = 0; r < row; r++){
@@ -484,7 +488,7 @@ void printCube(int row, int col, bool colorIsSet){
 			size_t remaining = sizeof(linebuf);
 			for(c = 0; c < col; c++){
 				colorStr = getColor(screenBuff[r][c]);
-				n = snprintf(pStr, remaining, "%s%c", (colorStr) ? colorStr : "\033[0m", screenBuff[r][c]);
+				n = snprintf(pStr, remaining, "%s%c", (colorStr) ? colorStr : reset_color, screenBuff[r][c]);
 				if( n < 0 || (size_t)n >= remaining) break;
 				/* Increment pointer to buffer */
 				pStr += n;
@@ -561,7 +565,16 @@ void projPt(struct vector *pt){
 		printf("[projPt] ERROR! z = %f x = %f y = %f\n", pt->z, pt->x, pt->y);	
 	}
 }
-
+void printInfo(void){
+	printf("Display a 3D ascii cube\n");
+	printf("### How to use program ###\n");
+	printf("Run the program including 3 input arguments in the following order:\n");
+	printf(" 1: [int] Row -> How many rows the window displaying the cube has\n");
+	printf(" 2: [int] Col -> How many coloumns the windows displaying the cube has. NOTE: The value of Col should be double that of Row, i.e Col = 2*Row\n");
+	printf(" 3: [int] Scale -> How big the cube is\n");
+	printf(" 4: [Optional] To enable face colors use the flag -c or -color\n");
+	printf("To exit the program type either 'q' or 'clear' in the termainal running the program\n");
+}		
 /* Convert ascii to integer */
 int _atoi(char *str){
 	int val = 0, sign = 1, indx = 0;
