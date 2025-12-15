@@ -1,6 +1,5 @@
 # About
-A lightweight C program that renders a rotating **3D ASCII cube** directly in the terminal using ANSI escape codes.The cube is projected with perspective projection (3D to 2D), vectors, dot-and cross products.
-The program requires user specified input arguments in a specified order
+A lightweight C program that renders a rotating **3D ASCII cube** directly in the terminal using ANSI escape codes. The cube is projected with perspective projection (3D to 2D), vectors, dot-and cross products. **The program requires user specified input arguments in a specified order**
 
 # Usage
 The program requires **at least** two input arguments in the **following order**
