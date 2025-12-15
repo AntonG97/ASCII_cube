@@ -16,6 +16,8 @@ The program requires **at least** two input arguments in the **following order**
 *./cube_ascii 30 60*
 *./cube_ascii 30 60 10*
 *./cube_asci 40 80 30 -c*
+<img width="612" height="505" alt="Screenshot from 2025-12-15 15-58-53" src="https://github.com/user-attachments/assets/9c30cee2-fde7-4ec0-90b7-22ec8a67a2e8" />
+
 
 # Controls
 To terminate the program, type either **'q'** or **'clear'** into the terminal running the program, or use 
