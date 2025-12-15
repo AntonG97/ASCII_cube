@@ -1,0 +1,27 @@
+# ASCII 3D Cube
+A lightweight C program that renders a rotating **3D ASCII cube** directly in the terminal using ANSI escape codes.
+The cube is projected with perspective projection (3D to 2D), vectors, dot-and cross products.
+The program requires user specified input arguments in a specified order
+----
+#
+
+# Usage
+The program requires **at least** two input arguments in the **following order**
+*./ascii_cube **<rows> <coloumns>** [scale | [-c | -color]] [-c | -color]*
+*Rows and coloums* determine the windows size in the terminal and *scale* applies a scaling factor to the cube. The default value is 20.
+*Color* activates unique coloring of each of the cube faces.
+**NOTE** The value of *coloums* should be twice that of rows for a correct window resolution 
+
+# Example
+*./cube_ascii 30 60*
+*./cube_ascii 30 60 10*
+*./cube_asci 40 80 30 -c*
+
+# Controls
+To terminate the program, type either **'q'** or **'clear'** into the terminal running the program, or use 
+**CTRL+C** to force exit. The program uses ANSI-escape codes as auxillary to render the cube and the program
+resets any settings before termination. 
+
+# Build
+The program depend on **math.h** to include **-lm** when compiling using GCC
+*gcc -o ascii_cube ascii_cube.c -lm -Wextra -Wall -ggdb*
