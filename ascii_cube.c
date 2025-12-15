@@ -161,7 +161,6 @@ int main(int argc, char **argv){
 	
 	CURHID();
 	ED(2);
-	//TODO: CHange so that the program ONLY cleares cube and prints for terminal
 	while(1){
 		clearBuf(row, col);
 		rotate();	
@@ -574,7 +573,8 @@ void printInfo(void){
 	printf(" 3: [int] Scale -> How big the cube is\n");
 	printf(" 4: [Optional] To enable face colors use the flag -c or -color\n");
 	printf("To exit the program type either 'q' or 'clear' in the termainal running the program\n");
-}		
+}
+
 /* Convert ascii to integer */
 int _atoi(char *str){
 	int val = 0, sign = 1, indx = 0;
@@ -590,6 +590,7 @@ int _atoi(char *str){
 
 /* If user input CTRL+D, reset cursor and color scheme */
 void handle_sigint(int signal){
+	(void)signal;
 	CURSHW();
 	COLOR_RESET();
 	exit(0);
