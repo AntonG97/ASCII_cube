@@ -25,8 +25,12 @@ To terminate the program, type either **'q'** or **'clear'** into the terminal r
 resets any settings before termination. 
 
 # Build
-The program depend on **math.h** to include **-lm** when compiling using GCC
-*gcc -o ascii_cube ascii_cube.c -lm -Wextra -Wall -ggdb*''
+To build the program, make sure that CMake and Make is installed on your computer.
+
+1) Create a build folder: *mkdir ./build*
+3) Enter *cmake --build build* to generate build files
+4) Enter *make ./build/ to build the code
+5) Run the program
 
 To download the code use
 ```bash
