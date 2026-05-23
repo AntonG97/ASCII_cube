@@ -29,7 +29,7 @@ To build the program, make sure that CMake and Make is installed on your compute
 
 1) Create a build folder: *mkdir ./build*
 3) Enter *cmake --build build* to generate build files
-4) Enter *make ./build/ to build the code
+4) Enter *make ./build/* to build the code
 5) Run the program
 
 To download the code use
