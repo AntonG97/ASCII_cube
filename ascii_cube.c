@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <float.h>
 #include <signal.h>
+#include <sys/select.h>
 
 /* Moves the cursor to row x, col y */
 #define CUP(x,y) printf("\033[%d;%dH", x,y);
