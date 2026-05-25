@@ -60,3 +60,4 @@ dkms.conf
 #Extra files
 cube_v1.c
 cube_v2
+ascii_cube
