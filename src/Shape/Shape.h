@@ -34,7 +34,7 @@ class Cube : public Shape, public Rotation
         void print() override;
         
     private:
-
+        void updateRotationMatrice() override;
         void drawTriangle(struct vector a, struct vector b, struct vector c, char ascii);
         void drawFlatTop(struct vector a, struct vector b, struct vector c, char ascii);
         void drawFlatBot(struct vector a, struct vector b, struct vector c, char ascii);
