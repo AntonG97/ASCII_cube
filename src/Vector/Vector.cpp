@@ -4,7 +4,7 @@
 
 Vector::Vector(double x, double y, double z) : _x(x), _y(y), _z(z) 
 {
-    assert(_z > 0 && "z-coordinate requires z > 0");
+    assert(_z != 0 && "z-coordinate requires z > 0");
 }
 double Vector::dotProduct(const Vector& other) const
 {
