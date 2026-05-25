@@ -2,33 +2,37 @@
 
 #include "Vector.h"
 
+class Rotation
+{
+    public:
+        void virtual rotate() = 0;
+        virtual ~Rotation() = default;
+
+    protected:
+        double xCoordAng;
+        double yCoordAng;
+        double zCoordAng;
+        double rotationMatrice[3][3];
+
+        virtual void updateRotationMatrice() = 0;
+};
+
 class Shape
 {
     public: 
-
-        virtual void rotate() = 0;
         virtual void project() = 0;
         virtual void print() = 0;
-
         virtual ~Shape() = default;
-
-    protected: 
-        double angleX;
-        double angleY;
-        double angleZ; 
-        double rotationMatrice[3][3];
-
-        void updateRotationMatrice();
 };
 
-class Cube : public Shape
+class Cube : public Shape, public Rotation
 {
     public:
         Cube();
-        void rotate();
-        void project();
-        void print();
-
+        void rotate() override;
+        void project() override;
+        void print() override;
+        
     private:
 
         void drawTriangle(struct vector a, struct vector b, struct vector c, char ascii);
