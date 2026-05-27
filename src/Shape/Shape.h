@@ -5,6 +5,7 @@
 class Rotation
 {
     public:
+        Rotation() : xCoordAng(0), yCoordAng(0), zCoordAng(0), rotationMatrice{} {}
         void virtual rotate() = 0;
         virtual ~Rotation() = default;
 
@@ -32,7 +33,7 @@ class Cube : public Shape, public Rotation
         void rotate() override;
         void project() override;
         void print() override;
-        
+
     private:
         void updateRotationMatrice() override;
         void drawTriangle(struct vector a, struct vector b, struct vector c, char ascii);
@@ -40,13 +41,12 @@ class Cube : public Shape, public Rotation
         void drawFlatBot(struct vector a, struct vector b, struct vector c, char ascii);
         struct vector nearX(struct vector a, struct vector b);
         struct vector nearY(struct vector a, struct vector b);
-
         void checkBnd(int *y, int *x);
         void checkVectorBnd(struct vector *pt);
         int isFlat(struct vector a, struct vector b, struct vector c);
         double getSlope(struct vector a, struct vector b);
 
-        struct face
+        struct CubeFace
         {
             struct Vector *TL;
             struct Vector *TR;
@@ -69,8 +69,8 @@ class Cube : public Shape, public Rotation
             {  1, -1, -1 },   //E
             { -1, -1, -1 },   //F
             { -1,  1, -1 },   //G
-            {  1,  1, -1 }    //H
-        };
+            {  1,  1, -1 }    //H 
+        }; 
         
         Vector _cube_rotated[8] = {
             {  1, -1,  1 },   //A

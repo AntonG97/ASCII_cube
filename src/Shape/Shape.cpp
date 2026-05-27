@@ -1,6 +1,5 @@
 #include "Shape.h"
 
-
 Cube::Cube()
 {
     
@@ -23,3 +22,4 @@ void Cube::updateRotationMatrice()
 {
 
 }
+
