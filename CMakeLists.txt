@@ -14,6 +14,7 @@ add_executable(ascii_cube main.cpp ${SOURCES})
 #Tell compiler to search recursively for .h files in /src
 target_include_directories(ascii_cube PRIVATE
     src/Shape
+    src/Shape/Cube
     src/Vector
     src/CLI
 )
