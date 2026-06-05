@@ -33,6 +33,7 @@ Cube::Cube() : _original_cube{
 void Cube::rotate()
 {
     Vector* vPtr;
+    double cosX;
     
 }
 
