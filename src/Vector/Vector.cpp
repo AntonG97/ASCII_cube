@@ -41,3 +41,6 @@ bool Vector::isEqual(const Vector& other) const
 
     return false;
 }
+void Vector::setX(double val) {_x = val; }
+void Vector::setY(double val) {_y = val; }
+void Vector::setZ(double val) {_z = val; }

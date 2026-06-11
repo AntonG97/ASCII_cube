@@ -10,6 +10,9 @@ struct Vector
         void move(int row, int col);
         void project();
         bool isEqual(const Vector& other) const;
+        void setX(double);
+        void setY(double);
+        void setZ(double);
     private:
         double _x;
         double _y;
