@@ -1,6 +1,10 @@
 #pragma once
 
+<<<<<<< HEAD
 struct Vec3
+=======
+struct Vector3
+>>>>>>> ac8c32d (Major update in Arthictecture)
 {
     public:
         Vec3(double x, double y, double z);
