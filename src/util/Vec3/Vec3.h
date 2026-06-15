@@ -1,6 +1,6 @@
 #pragma once
 
-struct Vector
+struct Vector3
 {
     public:
         Vector(double x, double y, double z);

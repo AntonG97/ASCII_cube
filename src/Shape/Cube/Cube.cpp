@@ -41,14 +41,14 @@ void Cube::rotate()
 {
     const Vector* vPtr;
     updateRotationMatrice();
-    const Vector xCoordRotated =  
+    //const Vector xCoordRotated;
 
     /* Rotate each vertice of the cube */
     for(size_t i{0}; i < _nrOfVertices; i++)
     {
         vPtr = &_original_cube[i];
 
-        _cube_rotated[i].setX()
+        _cube_rotated[i].setX(4);
     }
     
     
