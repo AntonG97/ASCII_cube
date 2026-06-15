@@ -32,4 +32,5 @@ class Cube : public Shape, public Rotation
         const Vector _original_cube[8];
         Vector _cube_rotated[8];
         struct CubeFace faces[6];
+        const size_t _nrOfVertices;
 };

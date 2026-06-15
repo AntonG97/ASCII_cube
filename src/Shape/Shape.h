@@ -7,12 +7,9 @@ class Rotation
 {
     public:
         Rotation() : 
-        xAng_(0.0), 
-        yAng_(0.0), 
-        zAng_(0.0),
-        xTrig_(xAng_.getAngle()),
-        yTrig_(yAng_.getAngle()),
-        zTrig_(zAng_.getAngle()),
+        _x(0.0f),
+        _y(0.0f),
+        _z(0.0f),
         rMatrice_{} {}
         void virtual rotate() = 0;
         virtual ~Rotation() = default;
@@ -24,47 +21,40 @@ class Rotation
             const double incrAngleY = 0.025,
             const double incrAngleZ = 0.026
         );
+        const double rotateX() const;
+        const double rotateY() const;
+        const double rotateZ() const;
 
-    private:
-        struct Angle
+        //Each Object of Trigonometic contains an angle and cos&sin values
+        struct Trigonometic
         {
             public:
-                Angle(double ang) : angle_(ang) {}
-                Angle& operator+=(double rhs);
-                double getAngle() const {return angle_;}
+                Trigonometic(double angle) : 
+                    _angle(angle),
+                    _cos(std::cos(angle)),
+                    _sin(std::sin(angle))
+                    {
+                        //Constructor body
+                    }
+                Trigonometic& operator+=(const double rhs);
+                double getSin() const   {return _sin;}
+                double getCos() const   {return _cos;}
+                double getAngle() const {return _angle;}
             private:
-                double angle_;
+                double _angle;      
+                double _cos;
+                double _sin;
         };
-
-        struct Trig
-        {
-            public:
-                Trig(double angle) : 
-                    cos_(cos(angle)), 
-                    sin_(sin(angle)) {} 
-                Trig& operator+=(const double rhs);
-                double getCos() const {return cos_;}
-                double getSin() const {return sin_;}
-                private:
-                double cos_;
-                double sin_;
-            };
-            
+          
+        private:
             void matriceMult();
 
-            /* Angles defined in radians */
-            Angle xAng_;
-            Angle yAng_;
-            Angle zAng_;
-
-            /* Trigonometic functions */
-            Trig xTrig_;
-            Trig yTrig_;
-            Trig zTrig_;
-
-            /* Rotation matrice */
+            Trigonometic _x;
+            Trigonometic _y;
+            Trigonometic _z;
+            
+            //Rotation matrice
             double rMatrice_[3][3];
-
 };
 
 class Shape
