@@ -10,7 +10,7 @@ class Rotation
         _x(0.0f),
         _y(0.0f),
         _z(0.0f),
-        rMatrice_{} {}
+        _rotationMatrice{} {}
         void virtual rotate() = 0;
         virtual ~Rotation() = default;
     
@@ -47,14 +47,14 @@ class Rotation
         };
           
         private:
-            void matriceMult();
+            void matriceMultiplication();
 
             Trigonometic _x;
             Trigonometic _y;
             Trigonometic _z;
             
             //Rotation matrice
-            double rMatrice_[3][3];
+            double _rotationMatrice[3][3];
 };
 
 class Shape

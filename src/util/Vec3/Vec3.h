@@ -1,15 +1,15 @@
 #pragma once
 
-struct Vector
+struct Vec3
 {
     public:
-        Vector(double x, double y, double z);
-        double dotProduct(const Vector& other) const;
-        Vector crossProduct(const Vector& other) const;
+        Vec3(double x, double y, double z);
+        double dotProduct(const Vec3& other) const;
+        Vec3 crossProduct(const Vec3& other) const;
         void scale(double scale);
         void move(int row, int col);
         void project();
-        bool isEqual(const Vector& other) const;
+        bool isEqual(const Vec3& other) const;
         void setX(double);
         void setY(double);
         void setZ(double);

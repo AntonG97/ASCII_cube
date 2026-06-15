@@ -15,7 +15,7 @@ Rotation::Trigonometic& Rotation::Trigonometic::operator+=(double rhs)
 }
 
 // Updates the rotation matrice
-void Rotation::matriceMult()
+void Rotation::matriceMultiplication()
 {
     //Get the latest trigonometic values
     const double cosX = _x.getCos();
@@ -29,17 +29,17 @@ void Rotation::matriceMult()
 
     //Perform the matrice multiplication
     //updating the rotation matrice
-    rMatrice_[0][0] = cosZ*cosY;
-	rMatrice_[0][1] = cosZ*sinY*sinX-sinZ*cosX;
-	rMatrice_[0][2] = cosZ*sinY*cosX +sinZ*sinX;
+    _rotationMatrice[0][0] = cosZ*cosY;
+	_rotationMatrice[0][1] = cosZ*sinY*sinX-sinZ*cosX;
+	_rotationMatrice[0][2] = cosZ*sinY*cosX +sinZ*sinX;
 
-	rMatrice_[1][0] = sinZ*cosY;
-	rMatrice_[1][1] = sinZ*sinY*sinX+cosZ*cosX;
-	rMatrice_[1][2] = sinZ*sinY*cosX-cosZ*sinX;
+	_rotationMatrice[1][0] = sinZ*cosY;
+	_rotationMatrice[1][1] = sinZ*sinY*sinX+cosZ*cosX;
+	_rotationMatrice[1][2] = sinZ*sinY*cosX-cosZ*sinX;
 
-	rMatrice_[2][0] = -sinY;
-	rMatrice_[2][1] = cosY*sinX;
-	rMatrice_[2][2] = cosY*cosX;
+	_rotationMatrice[2][0] = -sinY;
+	_rotationMatrice[2][1] = cosY*sinX;
+	_rotationMatrice[2][2] = cosY*cosX;
 }
 void Rotation::updateRotationMatrice(
     const double incrX,
@@ -54,5 +54,5 @@ void Rotation::updateRotationMatrice(
 
     //Perfom the matrice multiplication
     //Thereby updating the rotation matrice
-    matriceMult();
+    matriceMultiplication();
 }
