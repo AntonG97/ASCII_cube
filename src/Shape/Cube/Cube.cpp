@@ -27,13 +27,30 @@ Cube::Cube() : _original_cube{
             { &_cube_rotated[3], &_cube_rotated[2], &_cube_rotated[7], &_cube_rotated[6] }, // D C H G
             { &_cube_rotated[1], &_cube_rotated[2], &_cube_rotated[0], &_cube_rotated[3] }, // B C A D
             { &_cube_rotated[4], &_cube_rotated[7], &_cube_rotated[5], &_cube_rotated[6] }  // E H F G
-        } {}
+            }, 
+            _nrOfVertices(
+                sizeof(_original_cube) / sizeof(_original_cube[0])
+            )
+
+            {
+                //Constructor body
+            }
 
 ////////////////////////////// Public methods //////////////////////////
 void Cube::rotate()
 {
-    Vector* vPtr;
-    double cosX;
+    const Vector* vPtr;
+    updateRotationMatrice();
+    const Vector xCoordRotated =  
+
+    /* Rotate each vertice of the cube */
+    for(size_t i{0}; i < _nrOfVertices; i++)
+    {
+        vPtr = &_original_cube[i];
+
+        _cube_rotated[i].setX()
+    }
+    
     
 }
 
