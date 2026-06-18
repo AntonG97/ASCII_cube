@@ -6,7 +6,7 @@
 //and embedded systems
 
 template<typename T, size_t N>
-class StaticVector
+class StaticContainer 
 {
 private:
     T _arr[N];
@@ -17,3 +17,4 @@ public:
     T& operator[](size_t i);
 };
 
+#include "StaticContainer.tpp"

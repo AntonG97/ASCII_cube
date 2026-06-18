@@ -1,5 +1,8 @@
 #pragma once
 
+
+//TODO: MOVE project() into other class. TO much responsibility for Vector
+//TODO: move() can be removed in favor to using setters insted
 struct Vec3
 {
     public:
@@ -14,7 +17,7 @@ struct Vec3
         void setY(double);
         void setZ(double);
     private:
-        double _x;
-        double _y;
-        double _z;
+        double x_;
+        double y_;
+        double z_;
     };
