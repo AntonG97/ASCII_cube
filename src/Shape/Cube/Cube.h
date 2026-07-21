@@ -1,36 +1,45 @@
 #pragma once
+#include <array>
 
 #include "Shape.h"
 
-class Cube : public Shape, public Rotation
+namespace
 {
-    public:
-        Cube();
-        void rotate() override;
-        void project() override;
-        void print() override;
-        ~Cube() = default;
+    constexpr int V1 = 0;
+    constexpr int V2 = 1;
+    constexpr int V3 = 2;
+    constexpr int V4 = 3;
+    constexpr int V5 = 4;
+    constexpr int V6 = 5;
+    constexpr int V7 = 6;
+    constexpr int V8 = 7;
+}
 
-    private:
-        void drawTriangle(Vector a, Vector b, Vector c, char ascii);
-        void drawFlatTop( Vector a,  Vector b,  Vector c, char ascii);
-        void drawFlatBot( Vector a,  Vector b,  Vector c, char ascii);
-        Vector nearX( Vector a,  Vector b);
-        Vector nearY( Vector a,  Vector b);
-        void checkBnd(int *y, int *x);
-        void checkVectorBnd( Vector *pt);
-        int isFlat( Vector a,  Vector b,  Vector c);
-        double getSlope( Vector a,  Vector b);
+struct Cube : Shape
+{
+    // Members
 
-        struct CubeFace
+    std::array<Vec3, 8> verticies_;
+    std::array<Face, 12> faces_;
+
+    // Constructor
+
+    Cube() :
+        verticies_{
+            Vec3(  1, -1,  1), //A
+            Vec3( -1, -1,  1), //B
+            Vec3( -1,  1,  1), //C
+            Vec3(  1,  1,  1), //D
+            Vec3(  1, -1, -1), //E
+            Vec3( -1, -1, -1), //F
+            Vec3( -1,  1, -1), //G
+            Vec3(  1,  1, -1), //H
+        },
+        faces_{
+            Face(verticies_[0], verticies_[1], verticies_[2]),
+        }
+
         {
-            struct Vector *TL;
-            struct Vector *TR;
-            struct Vector *BL;
-            struct Vector *BR;
-        };
-        const Vector _original_cube[8];
-        Vector _cube_rotated[8];
-        struct CubeFace faces[6];
-        const size_t _nrOfVertices;
+            // Constructor Body
+        }
 };

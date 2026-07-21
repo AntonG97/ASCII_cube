@@ -15,8 +15,8 @@ add_executable(ascii_cube main.cpp ${SOURCES})
 target_include_directories(ascii_cube PRIVATE
     src/Shape
     src/Shape/Cube
-    src/Vector
-    src/CLI
+    src/util/Face
+    src/util/Vec3
 )
 
 # Link with math library
