@@ -1,29 +1,14 @@
 cmake_minimum_required(VERSION 3.15)
 
-# Declares the project name
-project(ascii_cube)
+project(Rotating_Ascii CXX)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED On)
 
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-    src/*.cpp
-    src/*.c
-)
+add_subdirectory(src)
 
-# Create an executable target from the source files
-add_executable(ascii_cube main.cpp ${SOURCES})
+add_executable(Rotating_Ascii main.cpp)
 
-#Tell compiler to search recursively for .h files in /src
-target_include_directories(ascii_cube PRIVATE
-    src/Shape
-    src/Shape/Cube
-    src/util/Face
-    src/util/Vec3
-)
-
-# Link with math library
-target_link_libraries(ascii_cube PRIVATE m )
-
-#Compile flags
-target_compile_options(ascii_cube PRIVATE
+target_compile_options(Rotating_Ascii PRIVATE
     -Wall
     -Wextra
     -ggdb
