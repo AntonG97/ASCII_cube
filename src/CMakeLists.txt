@@ -1,7 +1,14 @@
 cmake_minimum_required(VERSION 3.15)
 
-add_subdirectory(CLI_Parser)
-add_subdirectory(Renderer)
-add_subdirectory(Shape)
-add_subdirectory(Transformation)
+add_executable(Rotating_Ascii main.cpp)
+
 add_subdirectory(Util)
+
+target_link_libraries(Rotating_Ascii
+    Util)
+
+target_compile_options(Rotating_Ascii PRIVATE
+    -Wall
+    -Wextra
+    -ggdb
+)
