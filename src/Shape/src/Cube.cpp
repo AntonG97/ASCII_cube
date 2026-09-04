@@ -1,101 +1,53 @@
 #include "Cube.h"
 
-Cube::Cube() : _original_cube{
-            Vector( 1, -1,  1 ),    //A
-            Vector( -1, -1,  1 ),   //B
-            Vector( -1,  1,  1 ),   //C
-            Vector(  1,  1,  1 ),   //D
-            Vector(  1, -1, -1 ),   //E
-            Vector( -1, -1, -1 ),   //F
-            Vector( -1,  1, -1 ),   //G
-            Vector(  1,  1, -1 )    //H 
-            }, 
-            _cube_rotated{
-            Vector( 1, -1,  1 ),    //A
-            Vector( -1, -1,  1 ),   //B
-            Vector( -1,  1,  1 ),   //C
-            Vector(  1,  1,  1 ),   //D
-            Vector(  1, -1, -1 ),   //E
-            Vector( -1, -1, -1 ),   //F
-            Vector( -1,  1, -1 ),   //G
-            Vector(  1,  1, -1 )    //H   
-            },
-            faces{
-            { &_cube_rotated[0], &_cube_rotated[3], &_cube_rotated[4], &_cube_rotated[7] }, // A D E H
-            { &_cube_rotated[1], &_cube_rotated[0], &_cube_rotated[5], &_cube_rotated[4] }, // B A F E
-            { &_cube_rotated[2], &_cube_rotated[1], &_cube_rotated[6], &_cube_rotated[5] }, // C B G F
-            { &_cube_rotated[3], &_cube_rotated[2], &_cube_rotated[7], &_cube_rotated[6] }, // D C H G
-            { &_cube_rotated[1], &_cube_rotated[2], &_cube_rotated[0], &_cube_rotated[3] }, // B C A D
-            { &_cube_rotated[4], &_cube_rotated[7], &_cube_rotated[5], &_cube_rotated[6] }  // E H F G
-            }, 
-            _nrOfVertices(
-                sizeof(_original_cube) / sizeof(_original_cube[0])
-            )
-
-            {
-                //Constructor body
-            }
-
-////////////////////////////// Public methods //////////////////////////
-void Cube::rotate()
+namespace
 {
-    const Vector* vPtr;
-    updateRotationMatrice();
-    //const Vector xCoordRotated;
+    constexpr int V1 = 0;
+    constexpr int V2 = 1;
+    constexpr int V3 = 2;
+    constexpr int V4 = 3;
+    constexpr int V5 = 4;
+    constexpr int V6 = 5;
+    constexpr int V7 = 6;
+    constexpr int V8 = 7;
+};
 
-    /* Rotate each vertice of the cube */
-    for(size_t i{0}; i < _nrOfVertices; i++)
-    {
-        vPtr = &_original_cube[i];
+Cube::Cube() :
+    verticies_{
+        Vec3( 1, -1,  1), // V1
+        Vec3(-1, -1,  1), // V2
+        Vec3(-1,  1,  1), // V3
+        Vec3( 1,  1,  1), // V4
+        Vec3( 1, -1, -1), // V5
+        Vec3(-1, -1, -1), // V6
+        Vec3(-1,  1, -1), // V7
+        Vec3( 1,  1, -1)  // V8
+    },
+    faces_{
+        // Front
+        Face(verticies_[V1], verticies_[V2], verticies_[V3]),
+        Face(verticies_[V1], verticies_[V3], verticies_[V4]),
 
-        _cube_rotated[i].setX(4);
+        // Back
+        Face(verticies_[V5], verticies_[V7], verticies_[V6]),
+        Face(verticies_[V5], verticies_[V8], verticies_[V7]),
+
+        // Left
+        Face(verticies_[V2], verticies_[V6], verticies_[V7]),
+        Face(verticies_[V2], verticies_[V7], verticies_[V3]),
+
+        // Right
+        Face(verticies_[V1], verticies_[V4], verticies_[V8]),
+        Face(verticies_[V1], verticies_[V8], verticies_[V5]),
+
+        // Top
+        Face(verticies_[V3], verticies_[V7], verticies_[V8]),
+        Face(verticies_[V3], verticies_[V8], verticies_[V4]),
+
+        // Bottom
+        Face(verticies_[V1], verticies_[V5], verticies_[V6]),
+        Face(verticies_[V1], verticies_[V6], verticies_[V2])
     }
-    
-    
-}
-
-void Cube::project()
-{
-
-}
-void Cube::print(){
-
-}
-
-////////////////////////////// Private methods //////////////////////////
-void Cube::drawTriangle(Vector a, Vector b,Vector c, char ascii)
-{
-    
-}
-void Cube::drawFlatTop(Vector a,Vector b, Vector c, char ascii)
-{
-
-}
-void Cube::drawFlatBot(Vector a,Vector b, Vector c, char ascii)
-{
-
-}
-Vector Cube::nearX(Vector a, Vector b)
-{
-
-}
-Vector Cube::nearY(Vector a, Vector b)
-{
-
-}
-void Cube::checkBnd(int *y, int *x)
-{
-
-}
-void Cube::checkVectorBnd(Vector *pt)
-{
-
-}
-int Cube::isFlat(Vector a, Vector b, Vector c)
-{
-
-}
-double Cube::getSlope(Vector a, Vector b)
-{
-
-}
+    {
+        // Constructor Body
+    }

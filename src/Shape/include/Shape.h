@@ -1,12 +1,10 @@
 #pragma once
-
-#include "Vec3.h"
-#include "Face.h"
+#include "Util.h"
+#include <array>
 
 // Shape interface
-class Shape
+struct Shape
 {
     public: 
-        virtual void init() = 0; 
         virtual ~Shape() = default;
 };
