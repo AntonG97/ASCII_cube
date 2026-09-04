@@ -1,4 +1,5 @@
 #pragma once
+
 struct Vec3
 {
     // Coordinates
@@ -7,7 +8,7 @@ struct Vec3
     double z_{};
 
     // Constructor
-    Vec3(double x, double y, double z) : x_(x), y_(y), z_(z) {}
+    constexpr Vec3(double x, double y, double z) : x_(x), y_(y), z_(z) {}
     Vec3(const Vec3& rhs);
     Vec3& operator=(const Vec3& rhs);
 
