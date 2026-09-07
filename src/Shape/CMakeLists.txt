@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.15)
 
 set(Shape_Src
     src/Cube.cpp
-    src/Factory.cpp
     src/Octahedron.cpp
     src/Pyramid.cpp
     )
