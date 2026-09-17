@@ -1,19 +1,33 @@
+#include <cstdlib>
+#include "Shape.h"
+#include "Cube.h"
+#include "Pyramid.h"
+#include "Octahedron.h"
 #include "ShapeFactory.h"
 
 namespace
 {
+    constexpr int Mod = static_cast<int>(Shape_t::Random);
 
-}
-namespace ShapeFactory
-{
-
-    template<uint16_t V, uint16_t F>
-    Shape<V,F> createShape(ShapeType t)
+    Shape_t Gen_Random()
     {
-        switch(t)
-        {
-            case ShapeType::Cube: return Shape<8, 12>;  
-            case ShapeType::Triangle: return Shape<5,5>;
-        }
+        srand(time(0));
+        int nb = rand() % Mod;
+        return static_cast<Shape_t>(nb);
     }
+}
+
+std::unique_ptr<Shape> ShapeFactory::create(Shape_t Type)
+{
+    std::unique_ptr<Shape> tmp = nullptr;
+
+    switch(Type)
+    {
+        case Shape_t::Cube:         tmp = std::make_unique<Cube>(); break;
+        case Shape_t::Pyramid:      tmp = std::make_unique<Pyramid>(); break;
+        case Shape_t::Octahedron:   tmp = std::make_unique<Octahedron>(); break;
+        case Shape_t::Random:       tmp = create(Gen_Random());
+        default: break;
+    }
+    return tmp;
 }

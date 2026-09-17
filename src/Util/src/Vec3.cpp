@@ -1,6 +1,10 @@
 #include "Vec3.h"
 #include <math.h>
 
+Vec3::Vec3(const Vec3& rhs) = default;
+
+Vec3& Vec3::operator=(const Vec3& rhs) = default;
+
 constexpr double Vec3::dot(const Vec3& rhs) const
 {
     return x_*rhs.x_ + y_*rhs.y_ + z_*rhs.z_;
