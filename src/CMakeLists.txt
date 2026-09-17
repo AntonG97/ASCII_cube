@@ -19,5 +19,4 @@ target_link_libraries(Rotating_Ascii
 target_compile_options(Rotating_Ascii PRIVATE
     -Wall
     -Wextra
-    -ggdb
 )
