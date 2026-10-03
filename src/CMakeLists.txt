@@ -9,6 +9,7 @@ set_target_properties(Rotating_Ascii PROPERTIES
 add_subdirectory(Util)
 add_subdirectory(Shape)
 add_subdirectory(CLI_Parser)
+add_subdirectory(Transformation)
 
 target_link_libraries(Rotating_Ascii
     Util
