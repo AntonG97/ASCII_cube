@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Page-1" id="7H2NIYNrh4ih7BNh_2nG">
-    <mxGraphModel dx="3379" dy="1411" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1663" dy="454" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -361,12 +361,12 @@
             <mxPoint x="2" y="2" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="8FdjLwCFqWW1OaCmwtcb-12" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="8FdjLwCFqWW1OaCmwtcb-12" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="template&amp;lt;std::size_t V&amp;gt;&lt;div&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="160" width="310" x="-275" y="1535" as="geometry">
             <mxRectangle height="30" width="150" x="625" y="540" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="8FdjLwCFqWW1OaCmwtcb-13" parent="8FdjLwCFqWW1OaCmwtcb-12" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- rm_ : RotationMatrice&lt;/div&gt;&lt;div&gt;- ax_ : Angle&lt;/div&gt;&lt;div&gt;- ay_ : Angle&lt;/div&gt;&lt;div&gt;- az_ : Angle&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+        <mxCell id="8FdjLwCFqWW1OaCmwtcb-13" parent="8FdjLwCFqWW1OaCmwtcb-12" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- rm_ : RotationMatrice&amp;lt;V&amp;gt;&lt;/div&gt;&lt;div&gt;- ax_ : Angle&lt;/div&gt;&lt;div&gt;- ay_ : Angle&lt;/div&gt;&lt;div&gt;- az_ : Angle&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="74" width="310" y="26" as="geometry" />
         </mxCell>
         <mxCell id="8FdjLwCFqWW1OaCmwtcb-15" parent="8FdjLwCFqWW1OaCmwtcb-12" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
@@ -376,18 +376,18 @@
           <mxGeometry height="52" width="310" y="108" as="geometry" />
         </mxCell>
         <mxCell id="yJU2mRNoSoMI8UlXpulK-5" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;struct&lt;/div&gt;&lt;div&gt;&lt;b&gt;Angle&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="150" width="240" x="-360" y="1785" as="geometry">
+          <mxGeometry height="170" width="240" x="-360" y="1785" as="geometry">
             <mxRectangle height="30" width="150" x="625" y="540" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="yJU2mRNoSoMI8UlXpulK-6" parent="yJU2mRNoSoMI8UlXpulK-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- angle_ : double&lt;/div&gt;" vertex="1">
+        <mxCell id="yJU2mRNoSoMI8UlXpulK-6" parent="yJU2mRNoSoMI8UlXpulK-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ angle_ : double&lt;/div&gt;" vertex="1">
           <mxGeometry height="34" width="240" y="26" as="geometry" />
         </mxCell>
         <mxCell id="yJU2mRNoSoMI8UlXpulK-7" parent="yJU2mRNoSoMI8UlXpulK-5" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
           <mxGeometry height="8" width="240" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="yJU2mRNoSoMI8UlXpulK-8" parent="yJU2mRNoSoMI8UlXpulK-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ Angle(double)&lt;/div&gt;&lt;div&gt;+ operator+=(const Angle&amp;amp; rhs) : Angle&amp;amp;&lt;/div&gt;&lt;div&gt;+ explicit operator double() const : double&lt;/div&gt;&lt;div&gt;+ sin() constexpr : double&lt;/div&gt;&lt;div&gt;+ cos()&amp;nbsp;constexpr&amp;nbsp;: double&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="82" width="240" y="68" as="geometry" />
+        <mxCell id="yJU2mRNoSoMI8UlXpulK-8" parent="yJU2mRNoSoMI8UlXpulK-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ Angle(double)&lt;/div&gt;&lt;div&gt;+ operator+=(const Angle&amp;amp; rhs) : Angle&amp;amp;&lt;/div&gt;&lt;div&gt;+ operator+=(double rhs) : Angle&amp;amp;&lt;/div&gt;&lt;div&gt;+ explicit operator double() const : double&lt;/div&gt;&lt;div&gt;+ sin() constexpr : double&lt;/div&gt;&lt;div&gt;+ cos()&amp;nbsp;constexpr&amp;nbsp;: double&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="102" width="240" y="68" as="geometry" />
         </mxCell>
         <mxCell id="yJU2mRNoSoMI8UlXpulK-10" edge="1" parent="1" source="8FdjLwCFqWW1OaCmwtcb-16" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;rounded=0;entryX=0.611;entryY=-0.001;entryDx=0;entryDy=0;exitX=0.199;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryPerimeter=0;" target="yJU2mRNoSoMI8UlXpulK-5" value="3">
           <mxGeometry relative="1" x="-0.3329" y="13" as="geometry">
@@ -396,19 +396,19 @@
             <mxPoint x="-25" y="1785" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="yJU2mRNoSoMI8UlXpulK-15" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;struct&lt;/div&gt;&lt;div&gt;&lt;b&gt;RotationMatrice&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="230" width="250" x="-70" y="1785" as="geometry">
+        <mxCell id="yJU2mRNoSoMI8UlXpulK-15" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;template&amp;lt;std::size_t V&amp;gt; struct&lt;/div&gt;&lt;div&gt;&lt;b&gt;RotationMatrice&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="150" width="320" x="-70" y="1785" as="geometry">
             <mxRectangle height="30" width="150" x="625" y="540" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="yJU2mRNoSoMI8UlXpulK-16" parent="yJU2mRNoSoMI8UlXpulK-15" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- m_[3][3] constexpr : double" vertex="1">
-          <mxGeometry height="34" width="250" y="26" as="geometry" />
+        <mxCell id="yJU2mRNoSoMI8UlXpulK-16" parent="yJU2mRNoSoMI8UlXpulK-15" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- m_[3][3] const : double&lt;/div&gt;- originalCp_ const : std::array&amp;lt;Vec3, V&amp;gt;" vertex="1">
+          <mxGeometry height="34" width="320" y="26" as="geometry" />
         </mxCell>
         <mxCell id="yJU2mRNoSoMI8UlXpulK-17" parent="yJU2mRNoSoMI8UlXpulK-15" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
-          <mxGeometry height="8" width="250" y="60" as="geometry" />
+          <mxGeometry height="8" width="320" y="60" as="geometry" />
         </mxCell>
-        <mxCell id="yJU2mRNoSoMI8UlXpulK-18" parent="yJU2mRNoSoMI8UlXpulK-15" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ RotationMatrice(double)&lt;/div&gt;&lt;div&gt;+ operator[](std::size_t index) : double*&lt;/div&gt;&lt;div&gt;+ update(&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;const Angle&amp;amp; x,&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;const Angle&amp;amp; y,&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;const Angle&amp;amp; z)&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&amp;nbsp;: void&lt;/div&gt;&lt;div&gt;+ getX()&amp;nbsp;constexpr&amp;nbsp;: double&lt;/div&gt;&lt;div&gt;+ getY()&amp;nbsp;constexpr&amp;nbsp;: double&lt;/div&gt;&lt;div&gt;+ getZ()&amp;nbsp;constexpr&amp;nbsp;: double&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="162" width="250" y="68" as="geometry" />
+        <mxCell id="yJU2mRNoSoMI8UlXpulK-18" parent="yJU2mRNoSoMI8UlXpulK-15" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ RotationMatrice(const&amp;nbsp;std::array&amp;lt;Vec3, V&amp;gt;&amp;amp; original)&lt;/div&gt;&lt;div&gt;+ operator[](std::size_t index) : double&amp;amp;&lt;/div&gt;&lt;div&gt;+ operator[](std::size_t index) const : double&lt;/div&gt;+ rotateVectors(std::array&amp;lt;Vec3, V&amp;gt; vectors) const : void&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="82" width="320" y="68" as="geometry" />
         </mxCell>
         <mxCell id="yJU2mRNoSoMI8UlXpulK-20" edge="1" parent="1" source="8FdjLwCFqWW1OaCmwtcb-16" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=bottom;rounded=0;exitX=0.79;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;" value="1">
           <mxGeometry relative="1" x="-0.4358" y="10" as="geometry">
