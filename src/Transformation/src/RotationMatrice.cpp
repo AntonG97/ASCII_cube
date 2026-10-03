@@ -11,7 +11,7 @@ const double* RotationMatrice::operator[](std::size_t index) const
     return m_[index];
 }
 
-void RotationMatrice::setMatrice(
+void RotationMatrice::set(
     const Angle &x,
     const Angle &y,
     const Angle &z)

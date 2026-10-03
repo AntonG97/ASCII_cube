@@ -2,7 +2,7 @@
 
 struct Angle
 {
-    double angle_;
+    double angle_{};
     Angle& operator+=(const Angle& rhs);
     Angle& operator+=(double);
     explicit operator double() const;  

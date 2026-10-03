@@ -11,7 +11,7 @@ public:
     constexpr RotationMatrice();
     double* operator[](std::size_t index);
     const double* operator[](std::size_t index) const;
-    void setMatrice(
+    void set(
         const Angle& x,
         const Angle& y,
         const Angle& z
