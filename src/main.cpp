@@ -14,7 +14,18 @@ int main(int argc, char** argv)
 
     CLIpc display(args.IsColorSet());
     Renderer renderer(*shape, display);
-    renderer.render();
+    volatile long x = 0;
+    while(1)
+    {
+        if(x == 0)
+        {
+            renderer.render();
+        }
+        else
+        {
+            x = (x + 1) % 1000000;
+        }
+    }
 
     return 0;
 }
