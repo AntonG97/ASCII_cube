@@ -15,6 +15,7 @@ target_link_libraries(Rotating_Ascii
     Util
     Shape
     CLI_Parser
+    Transformation
     )
 
 target_compile_options(Rotating_Ascii PRIVATE
