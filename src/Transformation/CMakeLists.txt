@@ -4,6 +4,8 @@ set(
     Transformation_Src
     src/Angle.cpp
     src/Geometry.cpp
+    src/Projection.cpp
+    src/Rotation.cpp
     src/RotationMatrice.cpp
     )
 

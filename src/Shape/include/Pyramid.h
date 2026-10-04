@@ -3,8 +3,10 @@
 
 struct Pyramid : public Shape
 {
-    std::array<Vec3,5> verticies_;
-    std::array<Face,6> faces_;
+    std::vector<Vec3> verticies_;
+    std::vector<Face> faces_;
 
     Pyramid();
+    const std::vector<Vec3>& getVertices() const override { return verticies_; }
+    const std::vector<Face>& getFaces() const override { return faces_; }
 };

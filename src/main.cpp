@@ -5,7 +5,13 @@ int main(int argc, char** argv)
 {
     ArgParser args(argc, argv);
     std::unique_ptr<Shape> shape = args.parseArgs();
-    Geometry<10>(shape.verticies_);
+
+    if (!shape)
+    {
+        return 1;
+    }
+
+    Geometry geometry(shape->getVertices());
 
     return 0;
 }
