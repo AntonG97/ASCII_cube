@@ -1,7 +1,14 @@
 #include "Geometry.h"
 
-Geometry::Geometry(const std::vector<Vec3>& original) :
-	rotation_(original),
+Geometry::Geometry(std::vector<Vec3>& vertices) :
+	vertices_(vertices),
+	rotation_(vertices),
 	projection_()
 {
+}
+
+void Geometry::transform()
+{
+	rotation_.rotate(vertices_);
+	projection_.project(vertices_);
 }

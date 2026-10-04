@@ -8,8 +8,10 @@
 class Geometry
 {
 private:
+    std::vector<Vec3>& vertices_;
     Rotation rotation_;
     Projection projection_;
 public:
-    explicit Geometry(const std::vector<Vec3>& original);
+    explicit Geometry(std::vector<Vec3>& vertices);
+    void transform();
 };

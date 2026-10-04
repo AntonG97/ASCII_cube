@@ -1,12 +1,20 @@
 #include "ArgParser.h"
-#include "Geometry.h"
-#include "Shapes.h"
+#include "CLIpc.h"
+#include "Renderer.h"
+
 int main(int argc, char** argv)
 {
     ArgParser args(argc, argv);
     auto shape = args.parseArgs();
 
-    Geometry geometry(shape->getVertices());
+    if (!shape)
+    {
+        return 1;
+    }
+
+    CLIpc display(args.IsColorSet());
+    Renderer renderer(*shape, display);
+    renderer.render();
 
     return 0;
 }

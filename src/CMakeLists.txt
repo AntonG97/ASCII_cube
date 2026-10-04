@@ -10,12 +10,14 @@ add_subdirectory(Util)
 add_subdirectory(Shape)
 add_subdirectory(CLI_Parser)
 add_subdirectory(Transformation)
+add_subdirectory(Render)
 
 target_link_libraries(Rotating_Ascii
     Util
     Shape
     CLI_Parser
     Transformation
+    Render
     )
 
 target_compile_options(Rotating_Ascii PRIVATE
