@@ -1,4 +1,4 @@
-#include "Renderer.h"
+#include "Rasterizer.h"
 
 #include <algorithm>
 #include <array>
@@ -19,7 +19,7 @@ namespace
     }
 }
 
-Renderer::Renderer(Shape& shape, IDisplay& display) :
+Rasterizer::Rasterizer(Shape& shape, IDisplay& display) :
     shape_(shape),
     transformation_(shape.getVertices()),
     display_(display),
@@ -27,7 +27,7 @@ Renderer::Renderer(Shape& shape, IDisplay& display) :
 {
 }
 
-void Renderer::render()
+void Rasterizer::render()
 {
     transformation_.transform();
     buffer_.clear();
@@ -47,7 +47,7 @@ void Renderer::render()
     }
 }
 
-void Renderer::fillFace(const Face& face, char pixel)
+void Rasterizer::fillFace(const Face& face, char pixel)
 {
     const auto toScreen = [this](const Vec3& vertex)
     {

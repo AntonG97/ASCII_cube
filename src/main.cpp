@@ -1,6 +1,6 @@
 #include "ArgParser.h"
 #include "CLIpc.h"
-#include "Renderer.h"
+#include "Rasterizer.h"
 
 int main(int argc, char** argv)
 {
@@ -13,13 +13,13 @@ int main(int argc, char** argv)
     }
 
     CLIpc display(args.IsColorSet());
-    Renderer renderer(*shape, display);
+    Rasterizer rasterizer(*shape, display);
     volatile long x = 0;
     while(1)
     {
         if(x == 0)
         {
-            renderer.render();
+            rasterizer.render();
         }
         else
         {

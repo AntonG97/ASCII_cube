@@ -5,7 +5,7 @@
 #include "IDisplay.h"
 #include "Shape.h"
 
-class Renderer
+class Rasterizer
 {
 private:
     Shape& shape_;
@@ -16,6 +16,6 @@ private:
     void fillFace(const Face& face, char pixel);
 
 public:
-    Renderer(Shape& shape, IDisplay& display);
+    Rasterizer(Shape& shape, IDisplay& display);
     void render();
 };
