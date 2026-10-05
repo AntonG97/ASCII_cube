@@ -57,12 +57,12 @@ std::size_t FrameBuffer::height() const
     return height_;
 }
 
-Iterator FrameBuffer::begin()
+FrameBuffer::Iterator FrameBuffer::begin()
 {
-    return Iterator(pixels_.data(), width_);
+    return FrameBuffer::Iterator(pixels_.data(), width_);
 }
 
-Iterator FrameBuffer::end()
+FrameBuffer::Iterator FrameBuffer::end()
 {
-    return Iterator(pixels_.data() + pixels_.size(), width_);
+    return FrameBuffer::Iterator(pixels_.data() + pixels_.size(), width_);
 }

@@ -40,7 +40,7 @@ void Renderer::render()
     }
 
     display_.clear();
-    for (Iterator row = buffer_.begin(); row != buffer_.end(); ++row)
+    for (FrameBuffer::Iterator row = buffer_.begin(); row != buffer_.end(); ++row)
     {
         const RowView rowView = *row;
         display_.drawBuffer(rowView);
