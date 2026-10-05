@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FrameBuffer.h"
-#include "Geometry.h"
+#include "Transformation.h"
 #include "IDisplay.h"
 #include "Shape.h"
 
@@ -9,7 +9,7 @@ class Renderer
 {
 private:
     Shape& shape_;
-    Geometry geometry_;
+    Transformation transformation_;
     IDisplay& display_;
     FrameBuffer buffer_;
 

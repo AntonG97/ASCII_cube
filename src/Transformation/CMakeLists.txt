@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 set(
     Transformation_Src
     src/Angle.cpp
-    src/Geometry.cpp
+    src/Transformation.cpp
     src/Projection.cpp
     src/Rotation.cpp
     src/RotationMatrice.cpp

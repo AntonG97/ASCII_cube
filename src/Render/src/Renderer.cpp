@@ -21,7 +21,7 @@ namespace
 
 Renderer::Renderer(Shape& shape, IDisplay& display) :
     shape_(shape),
-    geometry_(shape.getVertices()),
+    transformation_(shape.getVertices()),
     display_(display),
     buffer_(display.getWidth(), display.getHeight())
 {
@@ -29,7 +29,7 @@ Renderer::Renderer(Shape& shape, IDisplay& display) :
 
 void Renderer::render()
 {
-    geometry_.transform();
+    transformation_.transform();
     buffer_.clear();
 
     constexpr std::array<char, 6> pixels{'#', 'o', '=', '*', '%', '$'};
