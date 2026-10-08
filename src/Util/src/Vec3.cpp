@@ -5,14 +5,14 @@ Vec3::Vec3(const Vec3& rhs) = default;
 
 Vec3& Vec3::operator=(const Vec3& rhs) = default;
 
-constexpr double Vec3::dot(const Vec3& rhs) const
+double Vec3::dot(const Vec3& rhs) const
 {
     return x_*rhs.x_ + y_*rhs.y_ + z_*rhs.z_;
 }
 
-constexpr Vec3 Vec3::cross(const Vec3& rhs) const
+Vec3 Vec3::cross(const Vec3& rhs) const
 {
-    const double x = y_ * rhs.z_ - z_ - rhs.y_;
+    const double x = y_ * rhs.z_ - z_ * rhs.y_;
     const double y = z_ * rhs.x_ - x_ * rhs.z_;
     const double z = x_ * rhs.y_ - y_ * rhs.x_;
     return Vec3{x,y,z};
@@ -44,7 +44,7 @@ constexpr Vec3 Vec3::operator+(const Vec3& rhs) const
    }; 
 }
 
-constexpr Vec3 Vec3::operator-(const Vec3& rhs) const
+Vec3 Vec3::operator-(const Vec3& rhs) const
 {
    return Vec3{
         x_ - rhs.x_,

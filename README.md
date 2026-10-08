@@ -1,38 +1,66 @@
-# About
-A lightweight C program that renders a rotating **3D ASCII cube** directly in the terminal using ANSI escape codes. The cube is projected with perspective projection (3D to 2D), vectors, dot-and cross products. **The program requires user specified input arguments in a specified order**
+# ASCII Cube
 
-# Usage
-The program requires **at least** two input arguments in the **following order**''
+A terminal-based 3D ASCII renderer written in C++. It rotates and renders
+triangle-mesh shapes using perspective projection, face-visibility checks,
+scanline rasterization, and a depth buffer.
 
-*./ascii_cube **<rows> <coloumns>** [scale | [-c | -color]] [-c | -color]*
-*Rows and coloums* determine the windows size in the terminal and *scale* applies a scaling factor to the cube. The default value is 20.''
-*Color* activates unique coloring of each of the cube faces.''
-**NOTE** The value of *coloums* should be twice that of rows for a correct window resolution 
+The repository also contains `ascii_cube.c`, the original C cube renderer.
+The CMake project builds the C++ application, `Rotating_Ascii`.
 
-# Example
-<img width="612" height="505" alt="Screenshot from 2025-12-15 15-58-53" src="https://github.com/user-attachments/assets/9c30cee2-fde7-4ec0-90b7-22ec8a67a2e8" />
+## Shapes
 
-*./cube_ascii 40 80 -color*''
+The C++ renderer supports:
 
-<img width="612" height="505" alt="Screenshot from 2025-12-15 15-59-13" src="https://github.com/user-attachments/assets/59501722-9bed-4721-bf05-587c630b650a" />
+- `cube`
+- `octahedron`
+- `tetrahedron`
+- `random` — selects one of the supported shapes
 
-*./cube_ascii 40 80*''
+## Build
 
+Requirements: CMake 3.15 or newer, a C++17 compiler, and Make.
 
-# Controls
-To terminate the program, type either **'q'** or **'clear'** into the terminal running the program, or use 
-**CTRL+C** to force exit. The program uses ANSI-escape codes as auxillary to render the cube and the program
-resets any settings before termination. 
+From the repository root:
 
-# Build
-To build the program, make sure that CMake and Make is installed on your computer.
-
-1) Create a build folder: *mkdir ./build*
-3) Enter *cmake --build build* to generate build files
-4) Enter *make ./build/* to build the code
-5) Run the program
-
-To download the code use
 ```bash
-git clone https://github.com/AntonG97/ASCII_cube.git
+cmake -S . -B build
+cmake --build build
 ```
+
+The build creates `./Rotating_Ascii` in the repository root.
+
+## Run
+
+```bash
+./Rotating_Ascii <shape> [scale] [-color]
+```
+
+The shape is required. `scale` is an optional positive integer that controls
+the shape's size (default: `20`). Color is optional; use `-color`, `-Color`,
+`-c`, or `-C`. These optional arguments can be supplied in either order.
+
+Examples:
+
+```bash
+./Rotating_Ascii cube
+./Rotating_Ascii tetrahedron 12 -color
+./Rotating_Ascii random -c
+```
+
+The terminal output is fixed at 40 columns by 20 rows.
+
+## Controls
+
+Type `q` or `clear` followed by Enter to exit. Press `Ctrl+C` to exit as well.
+The program restores the terminal colors and cursor when it shuts down.
+
+## Architecture
+
+- **CLI_Parser** validates command-line arguments and creates shapes.
+- **Transformation** rotates shape vertices and applies perspective projection.
+- **Renderer** coordinates transformation and rasterization for each frame.
+- **Rasterizer** culls invisible faces, fills triangles, and depth-tests pixels.
+- **FrameBuffer** stores character pixels; **CLIpc** displays them in the terminal.
+
+See [doc/Architecture.drawio](doc/Architecture.drawio) for the architecture
+diagram.

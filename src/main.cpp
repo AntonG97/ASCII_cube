@@ -1,6 +1,21 @@
 #include "ArgParser.h"
 #include "CLIpc.h"
+#include "InputParser.h"
 #include "Renderer.h"
+
+#include <csignal>
+#include <chrono>
+#include <thread>
+
+namespace
+{
+    volatile std::sig_atomic_t interrupted = 0;
+
+    void handleSignal(int)
+    {
+        interrupted = 1;
+    }
+}
 
 int main(int argc, char** argv)
 {
@@ -13,18 +28,17 @@ int main(int argc, char** argv)
     }
 
     CLIpc display(args.IsColorSet());
-    Renderer renderer(*shape, display);
-    volatile long x = 0;
-    while(1)
+    Renderer renderer(*shape, display, args.GetScale());
+
+    std::signal(SIGINT, handleSignal);
+    while (interrupted == 0)
     {
-        if(x == 0)
+        renderer.render();
+        if (InputParser::exit_program())
         {
-            renderer.render();
+            break;
         }
-        else
-        {
-            x = (x + 1) % 1000000;
-        }
+        std::this_thread::sleep_for(std::chrono::microseconds(18500));
     }
 
     return 0;

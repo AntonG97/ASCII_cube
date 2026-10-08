@@ -2,5 +2,5 @@
 
 #include "Shape.h"
 #include "Cube.h"
-#include "Pyramid.h"
 #include "Octahedron.h"
+#include "Tetrahedron.h"

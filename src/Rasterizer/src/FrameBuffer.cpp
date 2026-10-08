@@ -1,14 +1,12 @@
 #include "FrameBuffer.h"
 
 #include <algorithm>
-#include <limits>
 #include <stdexcept>
 
 FrameBuffer::FrameBuffer(std::size_t width, std::size_t height) :
     width_(width),
     height_(height),
-    pixels_(width * height),
-    depth_(width * height)
+    pixels_(width * height)
 {
     if (width_ == 0 || height_ == 0)
     {
@@ -20,22 +18,16 @@ FrameBuffer::FrameBuffer(std::size_t width, std::size_t height) :
 void FrameBuffer::clear()
 {
     std::fill(pixels_.begin(), pixels_.end(), ' ');
-    std::fill(depth_.begin(), depth_.end(), std::numeric_limits<double>::infinity());
 }
 
-void FrameBuffer::setPixel(std::size_t x, std::size_t y, double depth, char pixel)
+void FrameBuffer::setPixel(std::size_t x, std::size_t y, char pixel)
 {
     if (x >= width_ || y >= height_)
     {
         return;
     }
 
-    const std::size_t index = y * width_ + x;
-    if (depth < depth_[index])
-    {
-        depth_[index] = depth;
-        pixels_[index] = pixel;
-    }
+    pixels_[y * width_ + x] = pixel;
 }
 
 RowView FrameBuffer::operator[](std::size_t y)

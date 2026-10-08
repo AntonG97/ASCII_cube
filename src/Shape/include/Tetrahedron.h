@@ -1,12 +1,13 @@
 #pragma once
+
 #include "Shape.h"
 
-struct Pyramid : public Shape
+struct Tetrahedron : public Shape
 {
     std::vector<Vec3> verticies_;
     std::vector<Face> faces_;
 
-    Pyramid();
+    Tetrahedron();
     std::vector<Vec3>& getVertices() override { return verticies_; }
     const std::vector<Vec3>& getVertices() const override { return verticies_; }
     const std::vector<Face>& getFaces() const override { return faces_; }

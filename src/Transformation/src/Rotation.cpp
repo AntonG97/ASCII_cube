@@ -22,5 +22,5 @@ void Rotation::rotate(std::vector<Vec3>& vectors)
 
     ax_ += 0.013;
     ay_ += 0.025;
-    az_ += 0.026;
+    az_ += 0.036;
 }

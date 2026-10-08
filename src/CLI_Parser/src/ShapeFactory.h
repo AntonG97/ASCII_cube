@@ -6,8 +6,8 @@ class Shape;
 enum class Shape_t : int
 {
     Cube = 0,
-    Pyramid,
     Octahedron,
+    Tetrahedron,
     Random
 };
 

@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.15)
 set(Shape_Src
     src/Cube.cpp
     src/Octahedron.cpp
-    src/Pyramid.cpp
+    src/Tetrahedron.cpp
     )
 
 add_library(Shape

@@ -4,8 +4,8 @@
 
 namespace
 {
-    constexpr std::size_t DisplayWidth = 80;
-    constexpr std::size_t DisplayHeight = 40;
+    constexpr std::size_t DisplayWidth = 40;
+    constexpr std::size_t DisplayHeight = 20;
 
     const char* colorFor(char pixel)
     {
@@ -61,12 +61,17 @@ void CLIpc::drawBuffer(const RowView& row)
             std::cout << "\033[0m";
         }
     }
-    std::cout << '\n';
+    std::cout << '\n' << std::flush;
 }
 
 void CLIpc::clear()
 {
-    std::cout << "\033[2J\033[H\033[?25l";
+    if (firstFrame_)
+    {
+        std::cout << "\033[2J";
+        firstFrame_ = false;
+    }
+    std::cout << "\033[0m\033[H\033[?25l" << std::flush;
 }
 
 std::size_t CLIpc::getWidth() const

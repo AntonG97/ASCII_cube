@@ -1,8 +1,8 @@
 #include <cstdlib>
 #include "Shape.h"
 #include "Cube.h"
-#include "Pyramid.h"
 #include "Octahedron.h"
+#include "Tetrahedron.h"
 #include "ShapeFactory.h"
 
 namespace
@@ -24,8 +24,8 @@ std::unique_ptr<Shape> ShapeFactory::create(Shape_t Type)
     switch(Type)
     {
         case Shape_t::Cube:         tmp = std::make_unique<Cube>(); break;
-        case Shape_t::Pyramid:      tmp = std::make_unique<Pyramid>(); break;
         case Shape_t::Octahedron:   tmp = std::make_unique<Octahedron>(); break;
+        case Shape_t::Tetrahedron:  tmp = std::make_unique<Tetrahedron>(); break;
         case Shape_t::Random:       tmp = create(Gen_Random());
         default: break;
     }

@@ -1,10 +1,10 @@
 #include "Renderer.h"
 #include "Shape.h"
 
-Renderer::Renderer(Shape& shape, IDisplay& display) :
+Renderer::Renderer(Shape& shape, IDisplay& display, int scale) :
     shape_(shape),
     transformation_(shape.getVertices()),
-    rasterizer_(display)
+    rasterizer_(display, scale)
 {
 }
 

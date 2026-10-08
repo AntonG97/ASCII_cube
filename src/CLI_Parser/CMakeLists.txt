@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 
 set(CLI_Parser_Src
     src/ArgParser.cpp
+    src/InputParser.cpp
     src/ShapeFactory.cpp
     )
 

@@ -12,6 +12,6 @@ private:
     Rasterizer rasterizer_;
 
 public:
-    Renderer(Shape& shape, IDisplay& display);
+    Renderer(Shape& shape, IDisplay& display, int scale);
     void render();
 };

@@ -8,6 +8,7 @@ class CLIpc : public IDisplay
 {
 private:
     bool colorIsSet_;
+    bool firstFrame_ = true;
 
 public:
     explicit CLIpc(bool colorIsSet);
