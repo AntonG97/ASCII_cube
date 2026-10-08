@@ -11,6 +11,6 @@ private:
     Rotation rotation_;
     Projection projection_;
 public:
-    explicit Transformation(std::vector<Vec3>& original);
+    explicit Transformation(const std::vector<Vec3>& original);
     void transform(std::vector<Vec3>& vertecies);
 };

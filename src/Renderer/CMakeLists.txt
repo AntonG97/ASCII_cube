@@ -10,5 +10,5 @@ target_include_directories(Renderer
 target_link_libraries(Renderer
 	PUBLIC
 	Rasterizer
-    Transfomration
+    Transformation
 )

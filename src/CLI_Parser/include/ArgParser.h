@@ -3,7 +3,8 @@
 #include <memory>
 #include <optional>
 
-class Shape;
+#include "Shape.h"
+
 enum class Shape_t;
 
 class ArgParser

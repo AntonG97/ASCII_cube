@@ -1,6 +1,6 @@
 #include "Transformation.h"
 
-Transformation::Transformation(std::vector<Vec3>& original) :
+Transformation::Transformation(const std::vector<Vec3>& original) :
 	rotation_(original),
 	projection_()
 {

@@ -1,9 +1,11 @@
-#include "Rasterizer.h"
-
 #include <algorithm>
 #include <array>
 #include <cmath>
 
+#include "Rasterizer.h"
+#include "Util.h"
+#include "IDisplay.h"
+#include "Shape.h"
 namespace
 {
     struct ScreenVertex
@@ -19,21 +21,18 @@ namespace
     }
 }
 
-Rasterizer::Rasterizer(Shape& shape, IDisplay& display, Transformation& transformation) :
-    shape_(shape),
-    transformation_(transformation),
+Rasterizer::Rasterizer(IDisplay& display) :
     display_(display),
     buffer_(display.getWidth(), display.getHeight())
 {
+
 }
 
-void Rasterizer::render()
+void Rasterizer::render(const std::vector<Face>& faces)
 {
-    transformation_.transform();
     buffer_.clear();
 
     constexpr std::array<char, 6> pixels{'#', 'o', '=', '*', '%', '$'};
-    const std::vector<Face>& faces = shape_.getFaces();
     for (std::size_t index = 0; index < faces.size(); ++index)
     {
         fillFace(faces[index], pixels[index % pixels.size()]);

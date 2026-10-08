@@ -1,12 +1,15 @@
 #include "Renderer.h"
+#include "Shape.h"
 
 Renderer::Renderer(Shape& shape, IDisplay& display) :
+    shape_(shape),
     transformation_(shape.getVertices()),
-    rasterizer_(shape, display, transformation_)
+    rasterizer_(display)
 {
 }
 
 void Renderer::render()
 {
-    rasterizer_.render();
+    transformation_.transform(shape_.getVertices());
+    rasterizer_.render(shape_.getFaces());
 }
