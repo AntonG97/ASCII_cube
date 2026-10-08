@@ -1,14 +1,14 @@
 #include "Transformation.h"
 
-Transformation::Transformation(std::vector<Vec3>& vertices) :
-	vertices_(vertices),
-	rotation_(vertices),
+Transformation::Transformation(std::vector<Vec3>& original) :
+	rotation_(original),
 	projection_()
 {
+
 }
 
-void Transformation::transform()
+void Transformation::transform(std::vector<Vec3>& vertecies)
 {
-	rotation_.rotate(vertices_);
-	projection_.project(vertices_);
+	rotation_.rotate(vertecies);
+	projection_.project(vertecies);
 }

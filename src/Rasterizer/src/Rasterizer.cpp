@@ -19,9 +19,9 @@ namespace
     }
 }
 
-Rasterizer::Rasterizer(Shape& shape, IDisplay& display) :
+Rasterizer::Rasterizer(Shape& shape, IDisplay& display, Transformation& transformation) :
     shape_(shape),
-    transformation_(shape.getVertices()),
+    transformation_(transformation),
     display_(display),
     buffer_(display.getWidth(), display.getHeight())
 {

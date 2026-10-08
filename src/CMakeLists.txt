@@ -11,13 +11,14 @@ add_subdirectory(Shape)
 add_subdirectory(CLI_Parser)
 add_subdirectory(Transformation)
 add_subdirectory(Rasterizer)
+add_subdirectory(Renderer)
 
 target_link_libraries(Rotating_Ascii
     Util
     Shape
     CLI_Parser
     Transformation
-    Rasterizer
+    Renderer
     )
 
 target_compile_options(Rotating_Ascii PRIVATE
