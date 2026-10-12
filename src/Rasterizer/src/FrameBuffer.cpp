@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-FrameBuffer::FrameBuffer(std::size_t width, std::size_t height) :
+FrameBuffer::FrameBuffer(const std::size_t width, const std::size_t height) :
     width_(width),
     height_(height),
     pixels_(width * height)
@@ -20,7 +20,7 @@ void FrameBuffer::clear()
     std::fill(pixels_.begin(), pixels_.end(), ' ');
 }
 
-void FrameBuffer::setPixel(std::size_t x, std::size_t y, char pixel)
+void FrameBuffer::setPixel(const std::size_t x, const std::size_t y, char pixel)
 {
     if (x >= width_ || y >= height_)
     {
@@ -30,7 +30,7 @@ void FrameBuffer::setPixel(std::size_t x, std::size_t y, char pixel)
     pixels_[y * width_ + x] = pixel;
 }
 
-RowView FrameBuffer::operator[](std::size_t y)
+RowView FrameBuffer::operator[](const std::size_t y)
 {
     if (y >= height_)
     {
