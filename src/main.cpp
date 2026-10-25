@@ -20,15 +20,10 @@ namespace
 int main(int argc, char** argv)
 {
     ArgParser args(argc, argv);
-    auto shape = args.parseArgs();
+    ParsedPacket packet = args.parse();
 
-    if (!shape)
-    {
-        return 1;
-    }
-
-    CLIpc display(args.IsColorSet());
-    Renderer renderer(*shape, display, args.GetScale());
+    CLIpc display(packet.isColorSet_);
+    Renderer renderer(*packet.shape_, display, packet.scale_);
 
     std::signal(SIGINT, handleSignal);
     while (interrupted == 0)
