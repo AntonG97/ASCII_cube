@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <regex>
+#include <cctype>
 #include "ArgParser.h"
 #include "Shape.h"
 #include "ShapeFactory.h"
@@ -26,16 +27,16 @@ ParsedPacket ArgParser::parse()
 {
     ParsedPacket packet;
 
-    if((args.size()) % 2 != 0)
+    if((args.size()) % 2 == 0)
     {
-        // Uneven number of args, not valid.
+        // Even number of args, not valid.
         printHelpAndExit();
     }
     
     Shape_t shape = Shape_t::Cube;
-    for(auto It = args.begin() + 2; It + 1 < args.end(); It += 2)
+    for(auto It = args.begin() + 1; It + 1 < args.end(); It += 2)
     {
-        std::string Arg_Pair = *It + " " + *(It+1);
+        const std::string Arg_Pair = *It + " " + *(It+1);
         const bool isColor = isArgColor(Arg_Pair);
         if(isColor)
         {
@@ -126,23 +127,24 @@ void ArgParser::printHelpAndExit() const
 {
     std::cout << "\
         ### How to start program ###\n\
-        ./<Program> [-Shape <shape>] [(-Scale | -S) <scale>] [-Color | -C <status>] [-Resolution <width> <height>]\n\
+        ./<Program> [-Shape <shape>] [(-Scale | -S) <scale>] [-Color | -C <status>] [-Resolution <width>x<height>]\n\
         [-Shape <shape>]    <shape> = Cube | Octahedron | Tetrahedron | Random. (Default Cube)\n\
         [-Scale <scale>]    <scale> = Positive integer. (Default 20)\n\
         [-Color | -C <status>]  <status> = on | off. (Default off)\n\
-        [-Resolution <width> <height>] <width> <height> = Positive integers. (Default 40x20)\n";
+        [-Resolution <width>x<height>] <width> <height> = Positive integers. (Default 40x20)\n";
     exit(static_cast<int>(Status::INCORRECT_ARGS));
 }
 
 bool ArgParser::isArgColor(const std::string input) const
 {
     bool isColor = false;
-    const std::regex pattern(R"(-?[Cc](?:olor)?\s*(true|false))");
+    const std::regex pattern(R"(-?[Cc](?:olor)?\s+([Oo]n|[Ff]alse))");
     std::smatch match;
     if(std::regex_match(input, match, pattern))
     {
-       const std::string arg = match[1].str();
-       isColor = (arg == "true") ? true : false; 
+       std::string arg = match[1].str();
+       toLowerCase(arg);
+       isColor = (arg == "on") ? true : false; 
     }
     
     return isColor;
@@ -151,26 +153,27 @@ bool ArgParser::isArgColor(const std::string input) const
 std::optional<Shape_t> ArgParser::isArgShape(const std::string input) const
 {
     std::optional<Shape_t> tmp = std::nullopt; 
-    const std::regex pattern(R"(\s*-?[Ss]hape\s*(\w+))");
+    const std::regex pattern(R"(\s*-?[Ss]hape\s+(\w+))");
     std::smatch match;
 
     if(std::regex_match(input, match, pattern))
     {
-        const std::string shape = match[1].str();
+        std::string shape = match[1].str();
+        toLowerCase(shape);
         
-        if(shape == "Cube" || shape == "cube")
+        if(shape == "cube")
         {
             tmp = Shape_t::Cube;
         }
-        else if(shape == "Octahedron" || shape == "octahedron")
+        else if(shape == "octahedron")
         {
             tmp = Shape_t::Octahedron;
         }
-        else if(shape == "Tetrahedron" || shape == "tetrahedron")
+        else if(shape == "tetrahedron")
         {
             tmp = Shape_t::Tetrahedron;
         }
-        else if(shape == "Random" || shape == "random")
+        else if(shape == "random")
         {
             tmp = Shape_t::Random;
         }
@@ -182,7 +185,7 @@ std::optional<Shape_t> ArgParser::isArgShape(const std::string input) const
 std::optional<int> ArgParser::isArgScale(const std::string input) const
 {
     std::optional<int> scale = std::nullopt;
-    const std::regex pattern(R"(-?[Ss]cale\s*(\d+))");
+    const std::regex pattern(R"(-?[Ss]cale\s+(\d+))");
     std::smatch match;
 
     if(std::regex_search(input, match, pattern))
@@ -196,7 +199,7 @@ std::optional<int> ArgParser::isArgScale(const std::string input) const
 std::optional<Resolution> ArgParser::isArgResolution(const std::string input) const
 {
     std::optional<Resolution> res = std::nullopt;
-    const std::regex pattern(R"(-Resolution\s*(\d+)\s+(\d+))");
+    const std::regex pattern(R"(-[Rr]esolution\s+(\d+)x(\d+))");
     std::smatch match;
 
     if (std::regex_search(input, match, pattern))
@@ -204,10 +207,17 @@ std::optional<Resolution> ArgParser::isArgResolution(const std::string input) co
         int width = std::stoi(match[1].str());
         int height = std::stoi(match[2].str());
 
-        res.emplace();
-        res->height_ = width;
-        res->height_ = height;
+        res.emplace(width, height);
     }
     
     return res;
+}
+
+void ArgParser::toLowerCase(std::string &input) const
+{
+    for(char& ch : input)
+    {
+        const int char_int = std::tolower(static_cast<unsigned char>(ch));
+        ch = static_cast<char>(char_int);
+    }
 }
