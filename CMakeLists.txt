@@ -12,6 +12,11 @@ if(ASCII_DEBUG_INFO)
         "$<$<COMPILE_LANGUAGE:CXX>:-g>"
         "$<$<COMPILE_LANGUAGE:CXX>:-O0>"
     )
+else(
+    add_compile_options(
+        "$<$<COMPILE_LANGUAGE:CXX>:-O4>"  
+    )
+)
 endif()
 
 add_subdirectory(src)

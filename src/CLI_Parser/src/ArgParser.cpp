@@ -1,125 +1,173 @@
 #include <iostream>
-#include <charconv>
-#include <cstring>
 #include <string>
+#include <regex>
+#include <cctype>
 #include "ArgParser.h"
 #include "Shape.h"
 #include "ShapeFactory.h"
 
-
-ArgParser::ArgParser(int argc, char** argv) :
-    argc_(argc),
-    argv_(static_cast<char**>(argv))
+ArgParser::ArgParser(const int argc, const char* const* argv) :
+    args()
     {
-        // Constructor body
+        for(int i = 0; i < argc; ++i)
+        {
+            args.emplace_back(argv[i]);
+        }
     }
 
-// Generates a Shape if valid input arguments. Returns nullptr if invalid
-std::unique_ptr<Shape> ArgParser::parseArgs()
+// Generates a ParsedPackage object.
+ParsedPacket ArgParser::parse()
 {
-    if(argc_ > 4 || argc_ < 2)
+    ParsedPacket packet;
+
+    if((args.size()) % 2 == 0)
     {
-        printHelp();
-        return nullptr;
+        // Even number of args, not valid.
+        printHelpAndExit();
     }
-
+    
     Shape_t shape = Shape_t::Cube;
-    bool shapeIsSet = false;
-    bool scaleIsSet = false;
-
-    for(size_t i = 1U; i < argc_; ++i)
+    for(auto It = args.begin() + 1; It + 1 < args.end(); It += 2)
     {
-        bool isColor = isArgColor(i);
-        if(isColor)
-        {   
-            colorIsSet_ = true;
-            continue;
+        const std::string Arg_Pair = *It + " " + *(It+1);
+
+        std::optional<bool> isColor = isArgColor(Arg_Pair);
+        if(isColor.has_value())
+        {
+            if(packet.isColorSet_ == static_cast<bool>(Status::NOT_SET))
+            {   
+                packet.isColorSet_ = isColor.value();
+            }
+            else
+            {
+                printHelpAndExit();
+            }
         }
 
-        std::optional<Shape_t> isShape = isArgShape(i);
+        std::optional<Shape_t> isShape = isArgShape(Arg_Pair);
         if(isShape.has_value())
         {
-            if (shapeIsSet)
+            if (packet.shape_ == nullptr)
             {
-                printHelp();
-                return nullptr;
+                packet.shape_ = ShapeFactory::create(isShape.value());
             }
-            shape = isShape.value();
-            shapeIsSet = true;
-            continue;
+            else
+            {
+                printHelpAndExit();
+            }
         }
 
-        std::optional<int> scale = isArgScale(i);
-        if (scale.has_value() && !scaleIsSet)
+        std::optional<int> scale = isArgScale(Arg_Pair);
+        if (scale.has_value())
         {
-            scale_ = scale.value();
-            scaleIsSet = true;
-            continue;
+            if(packet.scale_ == static_cast<int>(Status::NOT_SET))
+            {
+                packet.scale_ = scale.value();
+            }
+            else
+            {
+                printHelpAndExit();
+            }
+        }
+        
+        std::optional<Resolution> res = isArgResolution(Arg_Pair);
+        if(res.has_value())
+        {
+            if(packet.resolution_.height_ == static_cast<int>(Status::NOT_SET) &&
+               packet.resolution_.width_  == static_cast<int>(Status::NOT_SET))
+            {
+                packet.resolution_ = res.value();
+            }
+            else
+            {
+                printHelpAndExit();
+            }
         }
 
-        printHelp();
-        return nullptr;
+        if( !isColor && !isShape.has_value() && 
+            !scale.has_value() && !res.has_value())
+            {
+
+                printHelpAndExit();
+            }
     }
 
-    if (!shapeIsSet)
+    if(packet.scale_ == static_cast<int>(Status::NOT_SET))
     {
-        printHelp();
-        return nullptr;
+        packet.scale_ = 20;
     }
 
-    return ShapeFactory::create(shape);
-}
-
-
-
-void ArgParser::printHelp()
-{
-    std::cout << "### How to start program ###\n\
-                  ./<Program> [Shape] [Scale] [-Color]\n\
-              [Shape]   = Cube | Octahedron | Tetrahedron | Random\n\
-                  [Scale]   = Positive integer (default 20)\n\
-                  [-Color]  = Display face color\n";
-}
-
-bool ArgParser::isArgColor(size_t index) const
-{
-    bool isColor = false;
-
-    if(index <= argc_ - 1)
+    if(packet.shape_ == nullptr)
     {
-        const std::string input{argv_[index]};
+        packet.shape_ = ShapeFactory::create(Shape_t::Cube);
+    }    
 
-        if(input == "-Color" || input == "-color" ||
-           input == "-C" || input == "-c")
-        {
-            isColor = true;
-        }    
+    if(packet.isColorSet_ == static_cast<bool>(Status::NOT_SET))
+    {
+        packet.isColorSet_ = false;
+    }
+
+    if(packet.resolution_.height_ == static_cast<int>(Status::NOT_SET) &&
+       packet.resolution_.width_ == static_cast<int>(Status::NOT_SET))
+    {
+        packet.resolution_.height_  = 20;
+        packet.resolution_.width_   = 40; 
+    }
+
+    return packet;
+}
+
+void ArgParser::printHelpAndExit() const
+{
+    std::cout << "\
+        ### How to start program ###\n\
+        ./<Program> [-Shape <shape>] [(-Scale | -S) <scale>] [-Color | -C <status>] [-Resolution <width>x<height>]\n\
+        [-Shape <shape>]    <shape> = Cube | Octahedron | Tetrahedron | Random. (Default Cube)\n\
+        [-Scale <scale>]    <scale> = Positive integer. (Default 20)\n\
+        [-Color | -C <status>]  <status> = on | off. (Default off)\n\
+        [-Resolution <width>x<height>] <width> <height> = Positive integers. (Default 40x20)\n";
+    exit(static_cast<int>(Status::INCORRECT_ARGS));
+}
+
+std::optional<bool> ArgParser::isArgColor(const std::string input) const
+{
+    std::optional<bool> isColor = std::nullopt;
+    const std::regex pattern(R"(-?[Cc](?:olor)?\s+([Oo]n|[Oo]ff))");
+    std::smatch match;
+    if(std::regex_match(input, match, pattern))
+    {
+       std::string arg = match[1].str();
+       toLowerCase(arg);
+       isColor.emplace((arg == "on") ? true : false); 
     }
     
     return isColor;
 }
 
-std::optional<Shape_t> ArgParser::isArgShape(size_t index) const
+std::optional<Shape_t> ArgParser::isArgShape(const std::string input) const
 {
     std::optional<Shape_t> tmp = std::nullopt; 
-    
-    if(index <= argc_ - 1)
-    {
-        const std::string input{argv_[index]};
+    const std::regex pattern(R"(\s*-?[Ss]hape\s+(\w+))");
+    std::smatch match;
 
-        if(input == "Cube" || input == "cube")
+    if(std::regex_match(input, match, pattern))
+    {
+        std::string shape = match[1].str();
+        toLowerCase(shape);
+        
+        if(shape == "cube")
         {
             tmp = Shape_t::Cube;
         }
-        if(input == "Octahedron" || input == "octahedron")
+        else if(shape == "octahedron")
         {
             tmp = Shape_t::Octahedron;
         }
-        if(input == "Tetrahedron" || input == "tetrahedron")
+        else if(shape == "tetrahedron")
         {
             tmp = Shape_t::Tetrahedron;
         }
-        if(input == "Random" || input == "random")
+        else if(shape == "random")
         {
             tmp = Shape_t::Random;
         }
@@ -128,15 +176,42 @@ std::optional<Shape_t> ArgParser::isArgShape(size_t index) const
     return tmp;
 }
 
-std::optional<int> ArgParser::isArgScale(size_t index) const
+std::optional<int> ArgParser::isArgScale(const std::string input) const
 {
-    const char* input = argv_[index];
-    int scale = 0;
-    const char* end = input + std::strlen(input);
-    const auto result = std::from_chars(input, end, scale);
-    if (result.ec != std::errc{} || result.ptr != end || scale <= 0)
+    std::optional<int> scale = std::nullopt;
+    const std::regex pattern(R"(-?[Ss]cale\s+(\d+))");
+    std::smatch match;
+
+    if(std::regex_search(input, match, pattern))
     {
-        return std::nullopt;
+        scale.emplace(std::stoi(match[1].str()));
     }
+
     return scale;
+}
+
+std::optional<Resolution> ArgParser::isArgResolution(const std::string input) const
+{
+    std::optional<Resolution> res = std::nullopt;
+    const std::regex pattern(R"(-[Rr]esolution\s+(\d+)x(\d+))");
+    std::smatch match;
+
+    if (std::regex_search(input, match, pattern))
+    {
+        int width = std::stoi(match[1].str());
+        int height = std::stoi(match[2].str());
+
+        res.emplace(width, height);
+    }
+    
+    return res;
+}
+
+void ArgParser::toLowerCase(std::string &input) const
+{
+    for(char& ch : input)
+    {
+        const int char_int = std::tolower(static_cast<unsigned char>(ch));
+        ch = static_cast<char>(char_int);
+    }
 }

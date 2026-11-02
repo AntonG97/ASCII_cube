@@ -1,0 +1,41 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "default",
+            "description": "Default build. Optimization enabled",
+            "displayName": "default build. Optimization enabled.",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_BUILD_TYPE": "Release",
+                "ASCII_DEBUG_INFO": "Off"
+            }
+        },
+        {
+            "name": "Debug",
+            "description": "Debug the program",
+            "displayName": "Debug build. Optimization disabled",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ASCII_DEBUG_INFO": "On"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "configurePreset": "default"
+        },
+        {
+            "name": "debug",
+            "configurePreset": "Debug"
+        }
+    ]
+}
