@@ -9,13 +9,6 @@
 ArgParser::ArgParser(const int argc, const char* const* argv) :
     args()
     {
-    /*
-     if(argc > 5)
-        {
-            printHelpAndExit();
-        }
-       args.reserve(argc);
-    */
         for(int i = 0; i < argc; ++i)
         {
             args.emplace_back(argv[i]);
@@ -37,12 +30,13 @@ ParsedPacket ArgParser::parse()
     for(auto It = args.begin() + 1; It + 1 < args.end(); It += 2)
     {
         const std::string Arg_Pair = *It + " " + *(It+1);
-        const bool isColor = isArgColor(Arg_Pair);
-        if(isColor)
+
+        std::optional<bool> isColor = isArgColor(Arg_Pair);
+        if(isColor.has_value())
         {
             if(packet.isColorSet_ == static_cast<bool>(Status::NOT_SET))
             {   
-                packet.isColorSet_ = true;
+                packet.isColorSet_ = isColor.value();
             }
             else
             {
@@ -135,16 +129,16 @@ void ArgParser::printHelpAndExit() const
     exit(static_cast<int>(Status::INCORRECT_ARGS));
 }
 
-bool ArgParser::isArgColor(const std::string input) const
+std::optional<bool> ArgParser::isArgColor(const std::string input) const
 {
-    bool isColor = false;
-    const std::regex pattern(R"(-?[Cc](?:olor)?\s+([Oo]n|[Ff]alse))");
+    std::optional<bool> isColor = std::nullopt;
+    const std::regex pattern(R"(-?[Cc](?:olor)?\s+([Oo]n|[Oo]ff))");
     std::smatch match;
     if(std::regex_match(input, match, pattern))
     {
        std::string arg = match[1].str();
        toLowerCase(arg);
-       isColor = (arg == "on") ? true : false; 
+       isColor.emplace((arg == "on") ? true : false); 
     }
     
     return isColor;

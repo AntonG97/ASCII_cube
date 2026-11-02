@@ -20,7 +20,7 @@ public:
     
 private:
     void printHelpAndExit()const;
-    bool isArgColor(const std::string input) const;
+    std::optional<bool> isArgColor(const std::string input) const;
     std::optional<Shape_t> isArgShape(const std::string input) const;
     std::optional<int> isArgScale(const std::string input) const;
     std::optional<Resolution> isArgResolution(const std::string input)const;
